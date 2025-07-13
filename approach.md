@@ -37,7 +37,7 @@ Provide a working implementation of a `TicketService` that:
 
 
 
-### PROBLEM:
+## PROBLEM:
 INPUT:
 - Account ID, must be > 0
 - Array of TicketTypeRequest containing:
@@ -58,7 +58,7 @@ OUTPUT:
   - Zero tickets requested
   - Invalid ticket types
 
-### Examples:
+## Examples:
 Test Case 1:
 INPUT - AccountID 88, 5 Adult, 3 child, 1 infant
 OUTPUT - £170, 8 seats. Booking successful.
@@ -134,7 +134,7 @@ Object TICKET_PRICES = {
 } 
 
 
-### ALGO
+## ALGO
 Get a valid accountID
 
 a)
