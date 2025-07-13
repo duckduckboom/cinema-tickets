@@ -7,6 +7,16 @@
   },
   "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "node --experimental-vm-modules ./node_modules/.bin/jest",
+    "test:verbose": "node --experimental-vm-modules ./node_modules/.bin/jest --verbose",
+    "start": "node index.js",
+    "lint": "eslint src/ test/",
+    "lint:fix": "eslint src/ test/ --fix"
   },
+  "devDependencies": {
+    "@eslint/js": "^9.31.0",
+    "eslint": "^9.31.0",
+    "globals": "^16.3.0",
+    "jest": "^30.0.4"
+  }
 }
