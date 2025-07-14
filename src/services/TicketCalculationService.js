@@ -1,25 +1,34 @@
 import { TICKET_PRICES } from '../pairtest/lib/Constants.js';
 
 
-export default class TicketingCalculationService {
+export default class TicketCalculationService {
   static TICKET_PRICES = TICKET_PRICES;
 
-  static getTotalCost(ticketCounts) {
-    const costDetails = this.calculateCostDetails(ticketCounts);
+
+  static calculateTotals(ticketAmounts) {
+    const totals = { totalCost: 0, totalSeats: 0};
+    totals.totalCost = this.getTotalCost(ticketAmounts),
+    totals.totalSeats = this.calculateSeatsNeeded(ticketAmounts)
+
+    return totals;
+  }
+
+  static getTotalCost(ticketAmounts) {
+    const costDetails = this.calculateCostDetails(ticketAmounts);
     return costDetails.totalCost;
   }
 
-  static calculateCostDetails(ticketCounts) {
-    const { ADULT: adultCount, CHILD: childCount, INFANT: infantCount } = ticketCounts;
-    const adultCost = adultCount * TICKET_PRICES.ADULT;
-    const childCost = childCount * TICKET_PRICES.CHILD;
-    const infantCost = infantCount * TICKET_PRICES.INFANT;
+  static calculateCostDetails(ticketAmounts) {
+    const { ADULT: adultAmount, CHILD: childAmount, INFANT: infantAmount } = ticketAmounts;
+    const adultCost = adultAmount * TICKET_PRICES.ADULT;
+    const childCost = childAmount * TICKET_PRICES.CHILD;
+    const infantCost = infantAmount * TICKET_PRICES.INFANT;
     const totalCost = adultCost + childCost + infantCost;
     return { adultCost, childCost, infantCost, totalCost };
   }
 
-  static calculateSeatsNeeded(ticketCounts) {
-    const { ADULT = 0, CHILD = 0 } = ticketCounts;
+  static calculateSeatsNeeded(ticketAmounts) {
+    const { ADULT = 0, CHILD = 0 } = ticketAmounts;
     return ADULT + CHILD;
   }
 }

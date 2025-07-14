@@ -35,46 +35,67 @@ describe('TicketService', () => {
     jest.clearAllMocks();
   });
 
-  describe('valid ticket purchase requests', () => {
-    test('calls mockPaymentService when booking is successful', () => {
+  describe('Given a valid ticket purchase request', () => {
+    test('should call mockPaymentService', () => {
       const accountId = 1;
       ticketService.purchaseTickets(accountId, new TicketTypeRequest(ADULT, 1));
       expect(mockPaymentService.makePayment).toHaveBeenCalledWith(accountId, 25);
     });
 
-    test('calls mockSeatService when booking is successful', () => {
+    test('should call mockSeatService', () => {
       const accountId = 2;
       ticketService.purchaseTickets(accountId, new TicketTypeRequest(ADULT, 2));
       expect(mockSeatService.reserveSeat).toHaveBeenCalledWith(accountId, 2);
     });
+
+    test('should allow booking with 5 adults, 5 children, and 5 infant', () => {
+      const accountId = 5;
+      const result = ticketService.purchaseTickets(
+        accountId,
+        new TicketTypeRequest(ADULT, 5),
+        new TicketTypeRequest(CHILD, 5),
+        new TicketTypeRequest(INFANT, 5)
+      );
+      expect(result).toEqual({
+        accountId,
+        ticketAmounts: { [ADULT]: 5, [CHILD]: 5, [INFANT]: 5 },
+        totalCost: 200,
+        totalSeats: 10,
+        success: true
+      });
+      expect(mockPaymentService.makePayment).toHaveBeenCalledWith(accountId, 200);
+      expect(mockSeatService.reserveSeat).toHaveBeenCalledWith(accountId, 10);
+    });
+
+
   });
 
-  describe('account ID must be a positive integer', () => {
-    test('error if negative number', () => {
+  describe('Account ID must be a positive integer', () => {
+    test('should error if negative number', () => {
       const accountID = -5;
       expect(() => ticketService.purchaseTickets(accountID)).toThrow(InvalidPurchaseException);
     });
-    test('error if decimal number', () => {
+    test('should error if decimal number', () => {
       const accountID = 5.5;
       expect(() => ticketService.purchaseTickets(accountID)).toThrow(InvalidPurchaseException);
     });
-    test('error if string with digits', () => {
+    test('should error if string with digits', () => {
       const accountID = "10";
       expect(() => ticketService.purchaseTickets(accountID)).toThrow(InvalidPurchaseException);
     });
-    test('error if boolean true', () => {
+    test('should error if boolean true', () => {
       const accountID = true;
       expect(() => ticketService.purchaseTickets(accountID)).toThrow(InvalidPurchaseException);
     }); 
-    test('error if boolean false', () => {
+    test('should error if boolean false', () => {
       const accountID = false;
       expect(() => ticketService.purchaseTickets(accountID)).toThrow(InvalidPurchaseException);
     });
-    test('error if null', () => {
+    test('should error if null', () => {
       const accountID = null;
       expect(() => ticketService.purchaseTickets(accountID)).toThrow(InvalidPurchaseException);
     });
-    test('error if undefined', () => {
+    test('should error if undefined', () => {
       const accountID = undefined;
       expect(() => ticketService.purchaseTickets(accountID)).toThrow(InvalidPurchaseException);
     });
