@@ -1,5 +1,5 @@
 import InvalidPurchaseException from "../../src/pairtest/lib/InvalidPurchaseException.js";
-import TicketService from "../../src/pairtest/TicketService";
+import TicketService from "../../src/services/TicketService.js";
 
 describe('TicketService', () => {
   let ticketService;

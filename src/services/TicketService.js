@@ -1,5 +1,5 @@
-import InvalidPurchaseException from './lib/InvalidPurchaseException.js';
-import { INVALID_ACCOUNT_ID } from './lib/Errors.js';
+import InvalidPurchaseException from '../pairtest/lib/InvalidPurchaseException.js';
+import { INVALID_ACCOUNT_ID } from '../pairtest/lib/Errors.js';
 
 export default class TicketService {
   /**
