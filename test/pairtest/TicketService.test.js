@@ -1,4 +1,4 @@
-import InvalidPurchaseException from "../../src/pairtest/lib/InvalidPurchaseException";
+import InvalidPurchaseException from "../../src/pairtest/lib/InvalidPurchaseException.js";
 import TicketService from "../../src/pairtest/TicketService";
 
 describe('TicketService', () => {
@@ -9,31 +9,31 @@ describe('TicketService', () => {
   });
 
   describe('account ID must be a positive integer', () => {
-    test('throws error for negative number', () => {
+    test('error if negative number', () => {
       const accountID = -5;
       expect(() => ticketService.purchaseTickets(accountID)).toThrow(InvalidPurchaseException);
     });
-    test('throws error for decimal number', () => {
+    test('error if decimal number', () => {
       const accountID = 5.5;
       expect(() => ticketService.purchaseTickets(accountID)).toThrow(InvalidPurchaseException);
     });
-    test('throws error for string with digits', () => {
+    test('error if string with digits', () => {
       const accountID = "10";
       expect(() => ticketService.purchaseTickets(accountID)).toThrow(InvalidPurchaseException);
     });
-    test('throws error for boolean true', () => {
+    test('error if boolean true', () => {
       const accountID = true;
       expect(() => ticketService.purchaseTickets(accountID)).toThrow(InvalidPurchaseException);
     }); 
-    test('throws error for boolean false', () => {
+    test('error if boolean false', () => {
       const accountID = false;
       expect(() => ticketService.purchaseTickets(accountID)).toThrow(InvalidPurchaseException);
     });
-    test('throws error for null', () => {
+    test('error if null', () => {
       const accountID = null;
       expect(() => ticketService.purchaseTickets(accountID)).toThrow(InvalidPurchaseException);
     });
-    test('throws error for undefined', () => {
+    test('error if undefined', () => {
       const accountID = undefined;
       expect(() => ticketService.purchaseTickets(accountID)).toThrow(InvalidPurchaseException);
     });
