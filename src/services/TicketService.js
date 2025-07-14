@@ -32,7 +32,7 @@ export default class TicketService {
       if (error instanceof InvalidPurchaseException) {
         throw new InvalidPurchaseException(INVALID_ACCOUNT_ID);
       }
-    }
+    }g
   }
 
   // Private methods

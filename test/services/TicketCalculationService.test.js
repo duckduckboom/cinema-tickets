@@ -4,8 +4,14 @@ import { TICKET_PRICES, ADULT, CHILD, INFANT } from '../../src/pairtest/lib/Cons
 describe('TicketCalculationService', () => {
 
   describe('calculates total cost and seats', () => {
-    test('should return total cost and seats needed', () => {
-      
+    test('should return correct totals for 2 adult, 3 children, 1 infant tickets', () => {
+      const ticketCounts = { [ADULT]: 2, [CHILD]: 3, [INFANT]: 1 };
+      expect(TicketCalculationService.calculateTotals(ticketCounts)).toEqual({ totalCost: 95, totalSeats: 5 });
+    });
+
+    test('should return correct totals for 0 adult, 0 children, 0 infant tickets', () => {
+      const ticketCounts = { [ADULT]: 0, [CHILD]: 0, [INFANT]: 0 };
+      expect(TicketCalculationService.calculateTotals(ticketCounts)).toEqual({ totalCost: 0, totalSeats: 0 });
     });
   });
   describe('calculates total cost for ticket types', () => {

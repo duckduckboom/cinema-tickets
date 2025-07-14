@@ -3,6 +3,7 @@ let TicketService
 let TicketTypeRequest
 let InvalidPurchaseException;
 let ADULT, CHILD, INFANT;
+let ADULT_PRICE, CHILD_PRICE, INFANT_PRICE;
 let mockPaymentService, mockSeatService;
 
 jest.unstable_mockModule('../../src/thirdparty/paymentgateway/TicketPaymentService.js', () => ({
@@ -23,6 +24,9 @@ describe('TicketService', () => {
     ADULT = constants.ADULT;
     CHILD = constants.CHILD;
     INFANT = constants.INFANT;
+    ADULT_PRICE = constants.TICKET_PRICES.ADULT;
+    CHILD_PRICE = constants.TICKET_PRICES.CHILD;
+    INFANT_PRICE = constants.TICKET_PRICES.INFANT;
   });
 
   beforeEach(() => {
@@ -50,21 +54,56 @@ describe('TicketService', () => {
 
     test('should allow booking with 5 adults, 5 children, and 5 infant', () => {
       const accountId = 5;
+      const adultAmount = 5;
+      const childAmount = 5;
+      const infantAmount = 5;
+      const seatsNeeded = adultAmount + childAmount;
+      const totalCost = (ADULT_PRICE * adultAmount) + (CHILD_PRICE * childAmount) + (INFANT_PRICE * infantAmount);
+      
       const result = ticketService.purchaseTickets(
         accountId,
-        new TicketTypeRequest(ADULT, 5),
-        new TicketTypeRequest(CHILD, 5),
-        new TicketTypeRequest(INFANT, 5)
+        new TicketTypeRequest(ADULT, adultAmount),
+        new TicketTypeRequest(CHILD, childAmount),
+        new TicketTypeRequest(INFANT, infantAmount)
       );
+
       expect(result).toEqual({
         accountId,
-        ticketAmounts: { [ADULT]: 5, [CHILD]: 5, [INFANT]: 5 },
-        totalCost: 200,
-        totalSeats: 10,
+        ticketAmounts: { [ADULT]: adultAmount, [CHILD]: childAmount, [INFANT]: infantAmount },
+        totalCost: totalCost,
+        totalSeats: seatsNeeded,
         success: true
       });
-      expect(mockPaymentService.makePayment).toHaveBeenCalledWith(accountId, 200);
-      expect(mockSeatService.reserveSeat).toHaveBeenCalledWith(accountId, 10);
+    
+      expect(mockPaymentService.makePayment).toHaveBeenCalledWith(accountId, totalCost);
+      expect(mockSeatService.reserveSeat).toHaveBeenCalledWith(accountId, seatsNeeded);
+    });
+
+    test('should allow booking with zero children and infants', () => {
+      const accountId = 5;
+      const adultAmount = 5;
+      const childAmount = 0;
+      const infantAmount = 0;
+      const seatsNeeded = adultAmount + childAmount;
+      const totalCost = (ADULT_PRICE * adultAmount) + (CHILD_PRICE * childAmount) + (INFANT_PRICE * infantAmount);
+      
+      const result = ticketService.purchaseTickets(
+        accountId,
+        new TicketTypeRequest(ADULT, adultAmount),
+        new TicketTypeRequest(CHILD, childAmount),
+        new TicketTypeRequest(INFANT, infantAmount)
+      );
+
+      expect(result).toEqual({
+        accountId,
+        ticketAmounts: { [ADULT]: adultAmount, [CHILD]: childAmount, [INFANT]: infantAmount },
+        totalCost: totalCost,
+        totalSeats: seatsNeeded,
+        success: true
+      });
+    
+      expect(mockPaymentService.makePayment).toHaveBeenCalledWith(accountId, totalCost);
+      expect(mockSeatService.reserveSeat).toHaveBeenCalledWith(accountId, seatsNeeded);
     });
 
 

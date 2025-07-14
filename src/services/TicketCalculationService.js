@@ -9,7 +9,6 @@ export default class TicketCalculationService {
     const totals = { totalCost: 0, totalSeats: 0};
     totals.totalCost = this.getTotalCost(ticketAmounts),
     totals.totalSeats = this.calculateSeatsNeeded(ticketAmounts)
-
     return totals;
   }
 
