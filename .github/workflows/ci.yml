@@ -7,7 +7,7 @@ on:
     branches: [ '**' ]
 
 jobs:
-  build-and-test:
+  build:
     runs-on: ubuntu-latest
 
     steps:
@@ -22,8 +22,12 @@ jobs:
       - name: Install dependencies
         run: npm install
 
+  lint-and-test:
+    runs-on: ubuntu-latest
+      
+    steps:  
       - name: Run linter
-        run: npx eslint .
+        run: npx esglint .
 
       - name: Run tests
         run: npm test
