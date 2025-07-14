@@ -73,4 +73,16 @@ describe('TicketCalculationService', () => {
       expect(TicketCalculationService.calculateSeatsNeeded({ ADULT: 5, CHILD: 5, INFANT: 5 })).toBe(10);
     });
   });
+
+  describe('calculate total tickets in booking', () => {
+     test('should return correct totals for 2 adult, 3 children, 1 infant tickets', () => {
+      const ticketCounts = { [ADULT]: 2, [CHILD]: 3, [INFANT]: 1 };
+      expect(TicketCalculationService.calculateTotalTickets(ticketCounts)).toEqual(6);
+    });
+
+    test('should return correct totals for 0 adult, 0 children, 0 infant tickets', () => {
+      const ticketCounts = { [ADULT]: 0, [CHILD]: 0, [INFANT]: 0 };
+      expect(TicketCalculationService.calculateTotalTickets(ticketCounts)).toEqual(0);
+    });
+  });
 });

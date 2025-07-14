@@ -1,7 +1,7 @@
 import { describe, jest } from '@jest/globals';
 let TicketService;
 let TicketTypeRequest;
-import { INVALID_ACCOUNT_ID, NO_TICKETS_REQUESTED, TOO_MANY_TICKETS, ADULT_REQUIRED, TOO_MANY_INFANTS_TO_ADULTS } from '../../src/pairtest/lib/Errors.js';
+import { INVALID_ACCOUNT_ID, EMPTY_TICKET_REQUEST, TOO_MANY_TICKETS, ADULT_REQUIRED, TOO_MANY_INFANTS_TO_ADULTS } from '../../src/pairtest/lib/Errors.js';
 let InvalidPurchaseException;
 let ADULT, CHILD, INFANT;
 let ADULT_PRICE, CHILD_PRICE, INFANT_PRICE;
@@ -253,7 +253,8 @@ describe('TicketService', () => {
         expect(() => ticketService.purchaseTickets(accountId, ...requests)).toThrow(ADULT_REQUIRED);
       });
       test('should not allow booking with zero tickets', () => {
-        expect(() => ticketService.purchaseTickets(accountId)).toThrow(NO_TICKETS_REQUESTED);
+        const requests = [];
+        expect(() => ticketService.purchaseTickets(accountId, ...requests)).toThrow(EMPTY_TICKET_REQUEST);
       });
     });
 

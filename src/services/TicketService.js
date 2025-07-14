@@ -1,5 +1,5 @@
 import InvalidPurchaseException from '../pairtest/lib/InvalidPurchaseException.js';
-import { INVALID_ACCOUNT_ID, INVALID_TICKET_UNITS, INVALID_TICKET_TYPE, EMPTY_TICKET_REQUEST } from '../pairtest/lib/Errors.js';
+import { INVALID_ACCOUNT_ID, INVALID_TICKET_TYPE, EMPTY_TICKET_REQUEST, TOO_MANY_TICKETS, ADULT_REQUIRED, TOO_MANY_INFANTS_TO_ADULTS } from '../pairtest/lib/Errors.js';
 import TicketCalculationService from './TicketCalculationService.js';
 import TicketPaymentService from '../thirdparty/paymentgateway/TicketPaymentService.js';
 import SeatReservationService from '../thirdparty/seatbooking/SeatReservationService.js';
@@ -17,12 +17,13 @@ export default class TicketService {
     this.#validateTicketTypeRequests(ticketTypeRequests);
   
     const ticketAmounts = { [ADULT]: 0, [CHILD]: 0, [INFANT]: 0 };
-
     ticketTypeRequests.forEach(req => {
       const ticketType = req.getTicketType();
       const ticketAmount = req.getNoOfTickets();
       ticketAmounts[ticketType] += ticketAmount;
     });
+
+    this.#validateTicketRules(ticketAmounts);
 
     const { totalCost, totalSeats } = TicketCalculationService.calculateTotals(ticketAmounts);
 
@@ -51,6 +52,38 @@ export default class TicketService {
     }
     if (this.#hasInvalidTicketTypeRequests(ticketTypeRequests)) {
       throw new InvalidPurchaseException(INVALID_TICKET_TYPE);
+    }
+  }
+
+  #validateTicketRules(ticketAmounts) {
+    this.#validateWithinTicketLimits(ticketAmounts);
+    this.#validateAdultRequired(ticketAmounts);
+    this.#validateInfantAdultRatio(ticketAmounts);
+  }
+
+  #validateWithinTicketLimits(ticketAmounts) {
+    const totalTickets = TicketCalculationService.calculateTotalTickets(ticketAmounts);
+    if (totalTickets === 0) {
+      throw new InvalidPurchaseException(EMPTY_TICKET_REQUEST);
+    } 
+    if (totalTickets > 25) {
+      throw new InvalidPurchaseException(TOO_MANY_TICKETS);
+    }
+  }
+
+  #validateAdultRequired(ticketAmounts) {
+    const hasNoAdults = ticketAmounts[ADULT] === 0;
+    const hasChildren = ticketAmounts[CHILD] > 0;
+    const hasInfants = ticketAmounts[INFANT] > 0;
+
+    if (hasNoAdults && (hasChildren || hasInfants)) {
+      throw new InvalidPurchaseException(ADULT_REQUIRED);
+    }
+  }
+
+  #validateInfantAdultRatio(ticketAmounts) {
+    if (ticketAmounts[INFANT] > ticketAmounts[ADULT]) {
+      throw new InvalidPurchaseException(TOO_MANY_INFANTS_TO_ADULTS);
     }
   }
 

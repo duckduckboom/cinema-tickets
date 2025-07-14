@@ -30,4 +30,9 @@ export default class TicketCalculationService {
     const { ADULT = 0, CHILD = 0 } = ticketAmounts;
     return ADULT + CHILD;
   }
+
+  static calculateTotalTickets(ticketCounts) {
+    const { ADULT = 0, CHILD = 0, INFANT = 0 } = ticketCounts;
+    return ADULT + CHILD + INFANT;
+  }
 }
