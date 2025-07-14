@@ -19,7 +19,7 @@ export default class TicketingCalculationService {
   }
 
   static calculateSeatsNeeded(ticketCounts) {
-    const { ADULT = 0, CHILD = 0 } = ticketCounts || {};
+    const { ADULT = 0, CHILD = 0 } = ticketCounts;
     return ADULT + CHILD;
   }
 }
