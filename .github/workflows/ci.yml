@@ -7,27 +7,31 @@ on:
     branches: [ '**' ]
 
 jobs:
-  build:
+  lint:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '20.11.1'
-
       - name: Install dependencies
         run: npm install
-
-  lint-and-test:
-    runs-on: ubuntu-latest
-      
-    steps:  
       - name: Run linter
-        run: npx esglint .
+        run: npx eslint .
 
+  test:
+    runs-on: ubuntu-latest
+    needs: lint
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.11.1'
+      - name: Install dependencies
+        run: npm install
       - name: Run tests
         run: npm test
