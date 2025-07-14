@@ -35,18 +35,30 @@ describe('TicketCalculationService', () => {
   });
 
   describe('calculates correct costDetails', () => {
-    test('returns cost breakdown by ticket type', () => {
+    test('calculates cost breakdown by ticket type', () => {
       let expectedCosts = { adult: 0, child: 0, infant: 0 , total: 0 };
       expectedCosts.adult = TICKET_PRICES.ADULT * 2;
       expectedCosts.child = TICKET_PRICES.CHILD * 3;
       expectedCosts.infant = TICKET_PRICES.INFANT * 1;
       expectedCosts.total = expectedCosts.adult + expectedCosts.child + expectedCosts.infant;
-      
+
       const breakdown = TicketCalculationService.calculateCostDetails({ [ADULT]: 2, [CHILD]: 3, [INFANT]: 1 });
       expect(breakdown.adultCost).toBe(expectedCosts.adult);
       expect(breakdown.childCost).toBe(expectedCosts.child);
       expect(breakdown.infantCost).toBe(expectedCosts.infant);
       expect(breakdown.totalCost).toBe(expectedCosts.total);
+    });
   });
+
+  describe('calculates correct seats needed for ticket types', () => {
+    test('calculates seats needed for 5 adult tickets', () => {
+      expect(TicketCalculationService.calculateSeatsNeeded({ ADULT: 5, CHILD: 0, INFANT: 0 })).toBe(5);
+    });
+     test('calculates seats needed for 5 adult and 5 child ticket', () => {
+      expect(TicketCalculationService.calculateSeatsNeeded({ ADULT: 5, CHILD: 5, INFANT: 0 })).toBe(10);
+    });
+     test('calculates seats needed for 5 adult, 5 child and 5 infant tickets', () => {
+      expect(TicketCalculationService.calculateSeatsNeeded({ ADULT: 5, CHILD: 5, INFANT: 5 })).toBe(10);
+    });
   });
 });
