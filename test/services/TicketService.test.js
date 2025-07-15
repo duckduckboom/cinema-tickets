@@ -101,6 +101,48 @@ describe('TicketService', () => {
         success: true
       });
     });
+
+     test('should error if payment service fail due to accountID', () => {
+      const accountId = 1;
+      mockPaymentService.makePayment.mockImplementation(() => {
+        throw new TypeError('accountId must be an integer');
+      });
+      expect(() =>
+        ticketService.purchaseTickets(accountId, new TicketTypeRequest(ADULT, 1))
+      ).toThrow('Unexpected error during ticket purchase: Payment gateway error: accountId must be an integer');
+    });
+
+    test('should error if payment service fails due to payment total', () => {
+      const accountId = 1;
+      mockPaymentService.makePayment.mockImplementation(() => {
+        throw new TypeError('totalAmountToPay must be an integer');
+      });
+      expect(() =>
+        ticketService.purchaseTickets(accountId, new TicketTypeRequest(ADULT, 1))
+      ).toThrow('Unexpected error during ticket purchase: Payment gateway error: totalAmountToPay must be an integer');
+    });
+
+    test('should throw InvalidPurchaseException if seat reservation fails with accountId TypeError', () => {
+      const accountId = 1;
+      mockSeatService.reserveSeat.mockImplementation(() => {
+        throw new TypeError('accountId must be an integer');
+      });
+
+      expect(() =>
+        ticketService.purchaseTickets(accountId, new TicketTypeRequest(ADULT, 1))
+      ).toThrow('Unexpected error during ticket purchase: Seat reservation error: accountId must be an integer');
+    });
+
+    test('should throw InvalidPurchaseException if seat reservation fails', () => {
+      const accountId = 1;
+      mockSeatService.reserveSeat.mockImplementation(() => {
+        throw new TypeError('totalSeatsToAllocate must be an integer');
+      });
+
+      expect(() =>
+        ticketService.purchaseTickets(accountId, new TicketTypeRequest(ADULT, 1))
+      ).toThrow('Unexpected error during ticket purchase: Seat reservation error: totalSeatsToAllocate must be an integer');
+    });
   });
 
   describe('Input validation', () => {

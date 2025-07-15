@@ -21,8 +21,8 @@ export default class TicketService {
 
     const { totalCost, totalSeats } = TicketCalculationService.calculateTotals(ticketAmounts);
 
-    this.#processPayment(accountId, totalCost);
-    this.#reserveSeats(accountId, totalSeats);
+    this.#handlePayment(accountId, totalCost);
+    this.#handleSeatReservation(accountId, totalSeats);
 
     return { accountId, ticketAmounts, totalCost, totalSeats, success: true };
     } catch (error) {
@@ -94,12 +94,32 @@ export default class TicketService {
     }
   }
 
-  #processPayment(accountId, totalCost) {
+  #handlePayment(accountId, totalCost) {
+    try {
+      this.#callPaymentService(accountId, totalCost);
+    } catch (error) {
+      throw new InvalidPurchaseException(
+        `Unexpected error during ticket purchase: Payment gateway error: ${error.message}`
+      );
+    }
+  }
+
+  #handleSeatReservation(accountId, totalSeats) {
+    try {
+      this.#callSeatReservationService(accountId, totalSeats);
+    } catch (error) {
+      throw new InvalidPurchaseException(
+        `Unexpected error during ticket purchase: Seat reservation error: ${error.message}`
+      );
+    }
+  }
+
+  #callPaymentService(accountId, totalCost) {
     const paymentService = new TicketPaymentService();
     paymentService.makePayment(accountId, totalCost);
   }
 
-  #reserveSeats(accountId, totalSeats) {
+  #callSeatReservationService(accountId, totalSeats) {
     const seatService = new SeatReservationService();
     seatService.reserveSeat(accountId, totalSeats);
   }
