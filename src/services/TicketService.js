@@ -15,12 +15,7 @@ export default class TicketService {
     this.#validateAccountId(accountId);
     this.#validateTicketTypeRequests(ticketTypeRequests);
   
-    const ticketAmounts = { [ADULT]: 0, [CHILD]: 0, [INFANT]: 0 };
-    ticketTypeRequests.forEach(req => {
-      const ticketType = req.getTicketType();
-      const ticketAmount = req.getNoOfTickets();
-      ticketAmounts[ticketType] += ticketAmount;
-    });
+    const ticketAmounts = this.#combineTicketRequests(ticketTypeRequests);
 
     this.#validateTicketRules(ticketAmounts);
 
@@ -111,5 +106,15 @@ export default class TicketService {
 
   #isInvalidArray(arr) {
     return !Array.isArray(arr) || arr.length === 0;
+  }
+
+  #combineTicketRequests(ticketTypeRequests) {
+    const ticketAmounts = { [ADULT]: 0, [CHILD]: 0, [INFANT]: 0 };
+    ticketTypeRequests.forEach(req => {
+      const ticketType = req.getTicketType();
+      const ticketAmount = req.getNoOfTickets();
+      ticketAmounts[ticketType] += ticketAmount;
+    });
+    return ticketAmounts;
   }
 }
