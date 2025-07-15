@@ -7,7 +7,7 @@ const ticketService = new TicketService();
 const accountId = 5;
 const requests = [
   new TicketTypeRequest(ADULT, 15),
-  new TicketTypeRequest(ADULT, 15),
+  new TicketTypeRequest(CHILD, 15),
   new TicketTypeRequest(INFANT, 0)
 ];
 
