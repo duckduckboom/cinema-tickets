@@ -284,6 +284,31 @@ describe('TicketService', () => {
           success: true
         });
       });
+
+      test('should allow booking with multiple adult types', () => {
+        const accountId = 5;
+        const adultAmount = 5;
+        const childAmount = 0;
+        const infantAmount = 0;
+        const seatsNeeded = adultAmount * 3;
+        const totalCost = (ADULT_PRICE * adultAmount * 3);
+        
+        const result = ticketService.purchaseTickets(
+          accountId,
+          new TicketTypeRequest(ADULT, adultAmount),
+          new TicketTypeRequest(ADULT, adultAmount),
+          new TicketTypeRequest(ADULT, adultAmount)
+        );
+
+        expect(result).toEqual({
+          accountId,
+          ticketAmounts: { [ADULT]: adultAmount * 3, [CHILD]: childAmount, [INFANT]: infantAmount },
+          totalCost: totalCost,
+          totalSeats: seatsNeeded,
+          totalTickets: 15,
+          success: true
+        });
+      });
     });
 
     describe('Invalid bookings', () => {
