@@ -4,9 +4,11 @@ My version of the cinema-tickets assignment! Quack!
 
 This project simulates cinema ticket booking via a CLI, applying the business rules (given later in this README) and constraints. It was built with TDD, and designed to have a clear, straightforward architecture.
 
+
 ![DuckFlix CLI in action](/DuckFlix-Demo.png)
 
----
+
+
 
 ## 🦆 Setup & Usage
 
@@ -51,6 +53,7 @@ This project has been designed so that it is simple to navigate and iterate on i
 
 
 Below is a diagram of how the main services in DuckFlix quack to each other:
+
 ![Cinema Ticket Architecture Diagram](/CT-architecture2.png)
 
   
