@@ -2,7 +2,7 @@
 
 My version of the cinema-tickets assignment! Quack!
 
-This project simulates cinema ticket booking via a CLI, applying the business rules (given later in this README) and constraints. It was built with TDD, and designed to have a clear, straightforward architecture.
+This project simulates cinema ticket booking via a Command-line interface (CLI), applying the business rules (given later in this README) and constraints. It was built with test-driven development (TDD), and designed to have a clear, straightforward architecture.
 
 
 ![DuckFlix CLI in action](/DuckFlix-Demo.png)
@@ -71,14 +71,14 @@ You (dear user) interact with the CLI, which hands everything off to `TicketServ
 ---
 ### TDD & CI Pipeline
 - **Test-Driven Development (TDD):** I used a TDD approach and have a lot of unit tests to help pinpoint any issues.
-- **Third-party integrations** are mocked/stubbed in most tests.
-- **Logging** is only shown when in developer mode, to keep the UX nice and clean.
+- **Third-party integrations** TicketPaymentService and SeatReservationService are mocked/stubbed in the relevant tests.
+- **Logging** is only shown when in developer mode, to keep the user experience nice and clean.
 - **CI Pipeline:** Every push runs jobs that lint and test the code, and it generates a coverage report. See the latest at: https://duckduckboom.github.io/cinema-tickets/coverage/
 
 ---
 ## 📦 Dependencies (aka, What Helps This Duck Quack)
 
-- **winston** — Logging, but not in production. Keeps everything clean but is there for when you inevitably need it.
+- **winston** — Logging, but not in production. Keeps things clean but everything is there for when you inevitably need it.
 - **jest** — Testing, because TDD. But seriously, the tests ensure everything works, and let you refactor without breaking anything (or at least, they show what you have broken...).
 - **eslint** — Linting to catch bugs before they become a problem.
 - **node-pty** — Lets us test the CLI, by spawning a pseudo-terminal that can simulate user interactions.
@@ -90,7 +90,7 @@ You (dear user) interact with the CLI, which hands everything off to `TicketServ
 - Dockerise the app for easy deployment
 - Allow multiple bookings and an order system
 - Allow amended bookings (because typos...)
-- Cryptography to protect PII 
+- Cryptography to protect personally identifiable information (PII) 
 - Add a web UI (because not everyone loves the terminal 😭)
 - CLI tests to be added to the GitHub pipeline
 
