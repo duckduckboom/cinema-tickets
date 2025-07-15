@@ -10,3 +10,5 @@ export const TICKET_PRICES = {
   CHILD: 15,
   INFANT: 0
 };
+
+export const TICKET_TYPES = [ADULT, CHILD, INFANT];

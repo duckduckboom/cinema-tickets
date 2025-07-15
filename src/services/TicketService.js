@@ -1,10 +1,9 @@
 import InvalidPurchaseException from '../pairtest/lib/InvalidPurchaseException.js';
-import { INVALID_ACCOUNT_ID, INVALID_TICKET_TYPE, EMPTY_TICKET_REQUEST, TOO_MANY_TICKETS, ADULT_REQUIRED, TOO_MANY_INFANTS_TO_ADULTS } from '../pairtest/lib/Errors.js';
+import * as Errors from '../pairtest/lib/Errors.js';
 import TicketCalculationService from './TicketCalculationService.js';
 import TicketPaymentService from '../thirdparty/paymentgateway/TicketPaymentService.js';
 import SeatReservationService from '../thirdparty/seatbooking/SeatReservationService.js';
-import { ADULT, CHILD, INFANT } from '../pairtest/lib/Constants.js';
-import TicketTypeRequest from '../pairtest/lib/TicketTypeRequest.js';
+import { ADULT, CHILD, INFANT, TICKET_TYPES } from '../pairtest/lib/Constants.js';
 
 
 export default class TicketService {
@@ -42,17 +41,30 @@ export default class TicketService {
   // Private methods
   #validateAccountId(accountId) {
     if (!Number.isInteger(accountId) || accountId <= 0) {
-      throw new InvalidPurchaseException(INVALID_ACCOUNT_ID);
+      throw new InvalidPurchaseException(Errors.INVALID_ACCOUNT_ID);
     }
   }
 
   #validateTicketTypeRequests(ticketTypeRequests) {
     if (this.#isInvalidArray(ticketTypeRequests)) {
-      throw new InvalidPurchaseException(EMPTY_TICKET_REQUEST);
+      throw new InvalidPurchaseException(Errors.EMPTY_TICKET_REQUEST);
     }
-    if (this.#hasInvalidTicketTypeRequests(ticketTypeRequests)) {
-      throw new InvalidPurchaseException(INVALID_TICKET_TYPE);
-    }
+    ticketTypeRequests.forEach(req => {
+      if (!this.#isValidTicketType(req.getTicketType())) {
+        throw new InvalidPurchaseException(Errors.INVALID_TICKET_TYPE(TICKET_TYPES));
+      }
+      if (!this.#isValidTicketAmount(req.getNoOfTickets())) {
+        throw new InvalidPurchaseException(Errors.INVALID_TICKET_UNITS);
+      }
+    });
+  }
+
+  #isValidTicketType(type) {
+    return [ADULT, CHILD, INFANT].includes(type);
+  }
+
+  #isValidTicketAmount(amount) {
+    return Number.isInteger(amount) && amount >= 0;
   }
 
   #validateTicketRules(ticketAmounts) {
@@ -64,10 +76,10 @@ export default class TicketService {
   #validateWithinTicketLimits(ticketAmounts) {
     const totalTickets = TicketCalculationService.calculateTotalTickets(ticketAmounts);
     if (totalTickets === 0) {
-      throw new InvalidPurchaseException(EMPTY_TICKET_REQUEST);
+      throw new InvalidPurchaseException(Errors.EMPTY_TICKET_REQUEST);
     } 
     if (totalTickets > 25) {
-      throw new InvalidPurchaseException(TOO_MANY_TICKETS);
+      throw new InvalidPurchaseException(Errors.TOO_MANY_TICKETS);
     }
   }
 
@@ -77,13 +89,13 @@ export default class TicketService {
     const hasInfants = ticketAmounts[INFANT] > 0;
 
     if (hasNoAdults && (hasChildren || hasInfants)) {
-      throw new InvalidPurchaseException(ADULT_REQUIRED);
+      throw new InvalidPurchaseException(Errors.ADULT_REQUIRED);
     }
   }
 
   #validateInfantAdultRatio(ticketAmounts) {
     if (ticketAmounts[INFANT] > ticketAmounts[ADULT]) {
-      throw new InvalidPurchaseException(TOO_MANY_INFANTS_TO_ADULTS);
+      throw new InvalidPurchaseException(Errors.TOO_MANY_INFANTS_TO_ADULTS);
     }
   }
 
@@ -99,9 +111,5 @@ export default class TicketService {
 
   #isInvalidArray(arr) {
     return !Array.isArray(arr) || arr.length === 0;
-  }
-
-  #hasInvalidTicketTypeRequests(requests) {
-    return requests.some(req => !(req instanceof TicketTypeRequest));
   }
 }

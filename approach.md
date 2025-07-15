@@ -65,11 +65,11 @@ OUTPUT - £170, 8 seats. Booking successful.
 
 Test Case 2:
 INPUT - AccountID 88, 1 Adult, 3 child, 1 infant
-OUTPUT - £40, 4 seats. Booking successful.
+OUTPUT - £70, 4 seats. Booking successful.
 
 Test Case 3:
 INPUT - AccountID 88, 0 Adult, 3 child, 0 infant
-OUTPUT - Booking unsuccessful. Cannot book child without adult.
+OUTPUT - Booking unsuccessful. At least one adult ticket is required when booking for children or infants.
 
 Test Case 4:
 INPUT - AccountID 88, 5 Adult, 0 child, 0 infant
@@ -77,20 +77,20 @@ OUTPUT - £125, 5 seats. Booking successful.
 
 Test case 5:
 INPUT - AccountID 0, 5 Adult, 0 child, 0 infant
-OUTPUT - Booking unsuccessful. Invalid account ID.
+OUTPUT - Booking unsuccessful. Please provide a valid account ID (a positive whole number).
 
 Test case 6:
 INPUT - AccountID 88, 26 Adult, 0 child, 0 infant
-OUTPUT - Booking unsuccessful. Too many tickets.
+OUTPUT - Booking unsuccessful. Sorry, you can only purchase up to 25 tickets at a time.
 
 Test Case 7:
 INPUT - AccountID 88, 1 Adult, 3 child, 2 infant
-OUTPUT - Booking unsuccessful. Not enough adults for amount of infants.
+OUTPUT - Booking unsuccessful. Each infant must be accompanied by one adult.
 
 Input validation tests:
 Test Case 8:
-INPUT - AccountID 88, 0 Adult, 0 child, 2 infant
-OUTPUT - Booking unsuccessful. No tickets requested.
+INPUT - AccountID 88, 0 Adult, 0 child, 0 infant
+OUTPUT - Booking unsuccessful. You must book at least one ticket.
 
 Test Case 9:
 INPUT - AccountID 88, AA Adult, 0 child, 0 infant
@@ -98,6 +98,14 @@ OUTPUT - Booking unsuccessful. Invalid ticket type.
 
 Test Case 10:
 INPUT - AccountID 88, -1 Adult, 3 child, 2 infant
+OUTPUT - Booking unsuccessful. Invalid ticket quantity.
+
+Test Case 11:
+INPUT - AccountID 88, -1 Adult, 0 child, 0 infant
+OUTPUT - Booking unsuccessful. Invalid ticket quantity.
+
+Test Case 12:
+INPUT - AccountID 88, 1.5 Adult, 0 child, 0 infant
 OUTPUT - Booking unsuccessful. Invalid ticket quantity.
 
 Scenario 1: 0 adults, 2 children, 3 infants
