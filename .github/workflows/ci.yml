@@ -41,7 +41,7 @@ jobs:
       - name: Run tests with coverage
         run: npm run test:coverage
 
-      - name: Upload coverage report to GitHub Pages
+      - name: Prepare coverage report
         uses: peaceiris/actions-gh-pages@v4
         if: always()
         with:
@@ -49,6 +49,6 @@ jobs:
           publish_dir: ./coverage/lcov-report
           destination_dir: coverage
       
-      - name: Output coverage report URL
+      - name: Upload Coverage Report to GitHub Pages
         if: always()
         run: echo "Coverage report available at https://duckduckboom.github.io/cinema-tickets/coverage/"
