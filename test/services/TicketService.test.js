@@ -107,32 +107,32 @@ describe('TicketService', () => {
      test('should error if payment service fail due to accountID', () => {
       const accountId = 1;
       mockPaymentService.makePayment.mockImplementation(() => {
-        throw new TypeError('Fake paymentService error');
+        throw new TypeError('accountId must be an integer');
       });
       expect(() =>
         ticketService.purchaseTickets(accountId, new TicketTypeRequest(ADULT, 1))
-      ).toThrow('Unexpected error during ticket purchase: Payment gateway error: Fake paymentService error');
+      ).toThrow('Unexpected error during ticket purchase: Payment gateway error: accountId must be an integer');
     });
 
     test('should error if payment service fails due to payment total', () => {
       const accountId = 1;
       mockPaymentService.makePayment.mockImplementation(() => {
-        throw new TypeError('Fake paymentService error');
+        throw new TypeError('totalAmountToPay must be an integer');
       });
       expect(() =>
         ticketService.purchaseTickets(accountId, new TicketTypeRequest(ADULT, 1))
-      ).toThrow('Unexpected error during ticket purchase: Payment gateway error: Fake paymentService error');
+      ).toThrow('Unexpected error during ticket purchase: Payment gateway error: totalAmountToPay must be an integer');
     });
 
     test('should throw InvalidPurchaseException if seat reservation fails with accountId TypeError', () => {
       const accountId = 1;
       mockSeatService.reserveSeat.mockImplementation(() => {
-        throw new TypeError('Fake reservationService error');
+        throw new TypeError('accountId must be an integer');
       });
 
       expect(() =>
         ticketService.purchaseTickets(accountId, new TicketTypeRequest(ADULT, 1))
-      ).toThrow('Unexpected error during ticket purchase: Seat reservation error: Fake reservationService error');
+      ).toThrow('Unexpected error during ticket purchase: Seat reservation error: accountId must be an integer');
     });
 
     test('should throw InvalidPurchaseException if seat reservation fails', () => {
@@ -190,18 +190,16 @@ describe('TicketService', () => {
 
     describe('Ticket Types and Amounts must be valid', () => {
       test('should error if invalid ticket type', () => {
-        const requests = [new TicketTypeRequest('DUCK', 5)];
-        expect(() => ticketService.purchaseTickets(1, ...requests)).toThrow(
-          Errors.INVALID_TICKET_TYPE(TICKET_TYPES)
-        );
+        expect(() => ticketService.purchaseTickets(1, new TicketTypeRequest('DUCK', 5)))
+          .toThrow(Errors.INVALID_TICKET_TYPE(TICKET_TYPES));
       });
       test('should error if non-integer ticket units', () => {
-        const requests = [new TicketTypeRequest(ADULT, 'DUCK')];
-        expect(() => ticketService.purchaseTickets(1, ...requests)).toThrow(Errors.INVALID_TICKET_UNITS);
+          expect(() => ticketService.purchaseTickets(1, new TicketTypeRequest(ADULT, 'DUCK')))
+          .toThrow(Errors.INVALID_TICKET_UNITS);
       });
       test('should error if decimal ticket units', () => {
-        const requests = [new TicketTypeRequest(ADULT, 2.5)];
-        expect(() => ticketService.purchaseTickets(1, ...requests)).toThrow(Errors.INVALID_TICKET_UNITS);
+         expect(() => ticketService.purchaseTickets(1, new TicketTypeRequest(ADULT, 2.5)))
+          .toThrow(Errors.INVALID_TICKET_UNITS);
       });
       test('should error if negative ticket units', () => {
         const requests = [new TicketTypeRequest(ADULT, -1)];

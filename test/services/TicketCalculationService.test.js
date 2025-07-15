@@ -44,6 +44,11 @@ describe('TicketCalculationService', () => {
       let expectedCost = (TICKET_PRICES.ADULT * 5) + (TICKET_PRICES.CHILD * 13) + (TICKET_PRICES.INFANT * 2);
       expect(TicketCalculationService.getTotalCost({ ADULT: 5, CHILD: 13, INFANT: 2 })).toBe(expectedCost);
     });
+
+    test('should calculate total cost for 100 adults, 13 children, 2 infants', () => {
+      let expectedCost = (TICKET_PRICES.ADULT * 100) + (TICKET_PRICES.CHILD * 13) + (TICKET_PRICES.INFANT * 2);
+      expect(TicketCalculationService.getTotalCost({ ADULT: 100, CHILD: 13, INFANT: 2 })).toBe(expectedCost);
+    });
   });
 
   describe('calculates correct cost details', () => {

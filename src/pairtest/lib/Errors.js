@@ -1,6 +1,6 @@
 export const INVALID_ACCOUNT_ID = 'Please provide a valid account ID (a positive whole number).';
 export const INVALID_TICKET_TYPE = (validTypes) => `type must be ${validTypes.slice(0, -1).join(', ')}, or ${validTypes.slice(-1)}`;
-export const INVALID_TICKET_UNITS = 'The amount of tickets for a certain type must be an integer.';
+export const INVALID_TICKET_UNITS = 'noOfTickets must be an integer';
 
 // Business logic
 export const EMPTY_TICKET_REQUEST = 'You must book at least one ticket.';
