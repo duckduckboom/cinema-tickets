@@ -4,7 +4,7 @@ import TicketTypeRequest from '../pairtest/lib/TicketTypeRequest.js';
 import InvalidPurchaseException from '../pairtest/lib/InvalidPurchaseException.js';
 import { ADULT, CHILD, INFANT } from '../pairtest/lib/Constants.js';
 import { cliMessages } from './cliMessages.js';
-
+import { logger } from '../pairtest/lib/Logger.js';
 
 const rl = readline.createInterface({
   input: process.stdin,
@@ -16,11 +16,13 @@ function promptUser(question) {
 }
 
 async function promptForBookingDetails() {
+  logger.info('Prompting user for booking details');
   console.log(cliMessages.bookTicketsHeading);
   const accountId = await getValidUserInput(cliMessages.prompts.accountId);
   const adultAmount = await getValidUserInput(cliMessages.prompts.adultAmount);
   const childAmount = await getValidUserInput(cliMessages.prompts.childAmount);
   const infantAmount = await getValidUserInput(cliMessages.prompts.infantAmount);
+  logger.info(`${cliMessages.logger.userInput}: accountId=${accountId}, adult=${adultAmount}, child=${childAmount}, infant=${infantAmount}`);
   return { accountId, adultAmount, childAmount, infantAmount };
 }
 
@@ -31,6 +33,7 @@ async function getValidUserInput(question) {
     if (Number.isInteger(num) && num >= 0) {
       return num;
     }
+    logger.warn(`${cliMessages.logger.invalidInput}: "${answer}"`)
     console.log(cliMessages.prompts.invalidNumber);
   }
 }
@@ -46,6 +49,7 @@ function combineTicketRequests({ adultAmount, childAmount, infantAmount }) {
 function displayResult(result) {
   const { ticketAmounts, totalCost, totalSeats, totalTickets } = result;
   const formatCurrency = (amount) => `£${amount.toFixed(2)}`;
+  logger.info(`${cliMessages.logger.bookingSucceeded}: ${JSON.stringify(result)}`)
   console.log(cliMessages.summary.successHeading);
   console.log(cliMessages.summary.divider);
   console.log(`${cliMessages.summary.adult}${ticketAmounts.ADULT}`);
@@ -59,19 +63,28 @@ function displayResult(result) {
 
 function displayError(error) {
   if (error instanceof InvalidPurchaseException) {
+    logger.error(`${cliMessages.logger.bookingFailed}: ${error.message}`)
     console.error(`${cliMessages.errors.bookingFailed} ${error.message}`);
   } else {
+    logger.error(`${cliMessages.logger.unexpectedError}: ${error}`)
     console.error(`${cliMessages.errors.unexpected} ${error}`);
   }
 }
 
 async function askToRetry() {
   const answer = await promptUser(cliMessages.prompts.retry);
-  return answer.trim().toLowerCase().startsWith('y');
+  const retry = answer.trim().toLowerCase().startsWith('y');
+  if (retry) {
+    logger.info(cliMessages.logger.userRetry);
+  } else {
+    logger.info(cliMessages.logger.userNoRetry);
+  }
+  return retry;
 }
 
 async function makeBooking() {
   try {
+    logger.info(cliMessages.logger.startBookingProcess);
     const userInput = await promptForBookingDetails();
     const requests = combineTicketRequests(userInput);
     const ticketService = new TicketService();
@@ -86,6 +99,7 @@ async function makeBooking() {
 
 async function main() {
   console.clear();
+  logger.info('DuckFlix CLI started');
   console.log(cliMessages.welcome);
   let bookingComplete = false;
   let wantsToRetry = true;
@@ -96,6 +110,7 @@ async function main() {
       wantsToRetry = await askToRetry();
     }
   } 
+  logger.info('DuckFlix CLI exited');
   console.log(cliMessages.goodbye);
   rl.close();
 }

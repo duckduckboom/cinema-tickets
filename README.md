@@ -24,7 +24,9 @@ Tests can be run with:
 npm test
 ```
 
-![Cinema Ticket Architecture Diagram](/CT-architecture.png)
+![Cinema Ticket Architecture Diagram](/CT-architecture2.png)
+
+Logging 
 
 So far I have completed:
 1) TicketService - all validation takes place here
