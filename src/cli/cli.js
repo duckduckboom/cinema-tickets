@@ -16,13 +16,11 @@ function promptUser(question) {
 }
 
 async function promptForBookingDetails() {
-  logger.info('Prompting user for booking details');
   console.log(cliMessages.bookTicketsHeading);
   const accountId = await getValidUserInput(cliMessages.prompts.accountId);
   const adultAmount = await getValidUserInput(cliMessages.prompts.adultAmount);
   const childAmount = await getValidUserInput(cliMessages.prompts.childAmount);
   const infantAmount = await getValidUserInput(cliMessages.prompts.infantAmount);
-  logger.info(`${cliMessages.logger.userInput}: accountId=${accountId}, adult=${adultAmount}, child=${childAmount}, infant=${infantAmount}`);
   return { accountId, adultAmount, childAmount, infantAmount };
 }
 
@@ -84,7 +82,6 @@ async function askToRetry() {
 
 async function makeBooking() {
   try {
-    logger.info(cliMessages.logger.startBookingProcess);
     const userInput = await promptForBookingDetails();
     const requests = combineTicketRequests(userInput);
     const ticketService = new TicketService();
@@ -99,7 +96,7 @@ async function makeBooking() {
 
 async function main() {
   console.clear();
-  logger.info('DuckFlix CLI started');
+  logger.info(cliMessages.logger.cliStarted);
   console.log(cliMessages.welcome);
   let bookingComplete = false;
   let wantsToRetry = true;
@@ -110,7 +107,7 @@ async function main() {
       wantsToRetry = await askToRetry();
     }
   } 
-  logger.info('DuckFlix CLI exited');
+  logger.info(cliMessages.logger.cliExited);
   console.log(cliMessages.goodbye);
   rl.close();
 }

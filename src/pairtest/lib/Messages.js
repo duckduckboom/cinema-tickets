@@ -1,0 +1,17 @@
+export const serviceMessages = {
+  validatedInput: (accountId, requests) => `TicketService: Validated accountId and ticketTypeRequests: accountId=${accountId}, requests=${JSON.stringify(requests)}`,
+  purchaseSucceeded: 'TicketService: Ticket purchase succeeded' ,
+  errorInPurchase: (error) => `TicketService: Error in purchaseTickets: ${error}`,
+  invalidAccountId: (accountId) => `TicketService: Invalid accountId: ${accountId}`,
+  noTicketRequests: 'TicketService: No ticket type requests provided',
+  invalidTicketType: (type) => `TicketService: Invalid ticket type: ${type}`,
+  invalidTicketAmount: (amount) => `TicketService: Invalid ticket amount: ${amount}`,
+  zeroTickets: 'TicketService: Attempted to book zero tickets',
+  tooManyTickets: (totalTickets) => `TicketService: Attempted to book too many tickets: ${totalTickets}`,
+  noAdults: 'TicketService: Attempted to book children or infants without adults',
+  tooManyInfants: 'TicketService: Attempted to book more infants than adults',
+  paymentServiceError: (error) => `TicketService: Payment service error: ${error}`,
+  seatReservationServiceError: (error) => `TicketService: Seat reservation service error: ${error}`,
+  globalUnhandledRejection: (reason) => `Global: Unhandled Rejection: ${reason}`,
+  globalUncaughtException: (err) => `Global: Uncaught Exception: ${err}`,
+}; 
