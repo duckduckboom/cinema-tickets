@@ -1,28 +1,9 @@
-import TicketService from './src/services/TicketService.js';
-import TicketTypeRequest from './src/pairtest/lib/TicketTypeRequest.js';
-import { ADULT, CHILD, INFANT } from './src/pairtest/lib/Constants.js';
+import { spawn } from 'child_process';
 
-const ticketService = new TicketService();
-
-const accountId = 5;
-const requests = [
-  new TicketTypeRequest(ADULT, 1.5),
-  new TicketTypeRequest(CHILD, 0),
-  new TicketTypeRequest(INFANT, 0)
-];
-
-console.log('Testing TicketService with:');
-console.log(`  Account ID: ${accountId}`);
-console.log('  Ticket requests:');
-requests.forEach(req => {
-  console.log(`    - ${req.getNoOfTickets()} x ${req.getTicketType()}`);
+const cliProcess = spawn('node', ['src/cli/cli.js'], {
+  stdio: 'inherit'
 });
 
-try {
-  const result = ticketService.purchaseTickets(accountId, ...requests);
-  console.log('\nBooking succeeded!');
-  console.log(result);
-} catch (err) {
-  console.log('\nBooking failed:');
-  console.log(err.message);
-}
+cliProcess.on('close', (code) => {
+  console.log(`\n🦆 Goodbye, please come again! 🦆`);
+}); 
