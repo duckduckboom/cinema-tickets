@@ -10,8 +10,9 @@
     "test": "node --experimental-vm-modules ./node_modules/.bin/jest",
     "test:verbose": "node --experimental-vm-modules ./node_modules/.bin/jest --verbose",
     "test:coverage": "node --experimental-vm-modules ./node_modules/.bin/jest --coverage --testPathIgnorePatterns=test/cli/cli.test.js",
-    "start": "node index.js",
-    "start:manual": "node manualCall.js",
+    "start": "NODE_ENV=production node index.js",
+    "start:manual": "NODE_ENV=production node manualCall.js",
+    "start:dev": "NODE_ENV=development node index.js",
     "lint": "eslint src/ test/",
     "lint:fix": "eslint src/ test/ --fix"
   },

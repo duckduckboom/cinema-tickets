@@ -1,0 +1,12 @@
+{
+  "appName": "DuckFlix",
+  "currency": "GBP",
+  "featureFlags": {
+    "enableLogging": true,
+    "enableExperimentalCLI": false
+  },
+  "logging": {
+    "enabled": true,
+    "devOnly": true
+  }
+} 
