@@ -2,7 +2,7 @@
 
 My version of the cinema-tickets assignment!
 
-This project simulates cinema ticket booking via a CLI, applying the business rules and constraints. It's designed with testability, separation of concerns, and clean architecture in mind.
+This project simulates cinema ticket booking via a CLI, applying the business rules (given later in this README) and constraints. It was built with TDD, and designed to have a clear, straightforward architecture.
 
 ![DuckFlix CLI in action](/DuckFlix-Demo.png)
 
