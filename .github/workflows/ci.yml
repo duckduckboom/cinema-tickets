@@ -12,12 +12,15 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '20.11.1'
+
       - name: Install dependencies
         run: npm install
+
       - name: Run linter
         run: npx eslint .
 
@@ -27,11 +30,25 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '20.11.1'
       - name: Install dependencies
         run: npm install
-      - name: Run tests
-        run: npm test
+
+      - name: Run tests with coverage
+        run: npm run test:coverage
+
+      - name: Prepare coverage report
+        uses: peaceiris/actions-gh-pages@v4
+        if: always()
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./coverage/lcov-report
+          destination_dir: coverage
+      
+      - name: Upload Coverage Report to GitHub Pages
+        if: always()
+        run: echo "Coverage report available at https://duckduckboom.github.io/cinema-tickets/coverage/"
