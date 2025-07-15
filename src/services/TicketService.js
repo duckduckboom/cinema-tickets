@@ -47,10 +47,6 @@ export default class TicketService {
   }
 
   #validateTicketTypeRequests(ticketTypeRequests) {
-    if (this.#isInvalidArray(ticketTypeRequests)) {
-      logger.warn(serviceMessages.noTicketRequests);
-      throw new InvalidPurchaseException(Errors.EMPTY_TICKET_REQUEST);
-    }
     ticketTypeRequests.forEach(req => {
       if (!this.#isValidTicketType(req.getTicketType())) {
         logger.warn(serviceMessages.invalidTicketType(req.getTicketType()));
@@ -136,10 +132,6 @@ export default class TicketService {
   #callSeatReservationService(accountId, totalSeats) {
     const seatService = new SeatReservationService();
     seatService.reserveSeat(accountId, totalSeats);
-  }
-
-  #isInvalidArray(arr) {
-    return !Array.isArray(arr) || arr.length === 0;
   }
 
   #combineTicketRequests(ticketTypeRequests) {
