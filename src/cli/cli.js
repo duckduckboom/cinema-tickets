@@ -50,7 +50,7 @@ function displayResult(result) {
   console.log(`Adult tickets: ${ticketAmounts.ADULT}`);
   console.log(`Child tickets: ${ticketAmounts.CHILD}`);
   console.log(`Infant tickets: ${ticketAmounts.INFANT}`);
-  console.log('\n🎟️ Total tickets:', totalTickets);
+  console.log('\n🎟️  Total tickets:', totalTickets);
   console.log('💺 Total seats:', totalSeats);
     console.log('💰 Total cost:', formatCurrency(totalCost));
   console.log('----------------------');
@@ -84,6 +84,7 @@ async function makeBooking() {
 }
 
 async function main() {
+  console.clear();
   console.log('🦆  Welcome to DuckFlix! 🦆');
   let bookingComplete = false;
   let wantsToRetry = true;

@@ -4,6 +4,6 @@ const cliProcess = spawn('node', ['src/cli/cli.js'], {
   stdio: 'inherit'
 });
 
-cliProcess.on('close', (code) => {
+cliProcess.on('close', () => {
   console.log(`\n🦆 Goodbye, please come again! 🦆`);
 }); 
