@@ -1,6 +1,6 @@
 # Welcome to DuckFlix!
 
-My version of the cinema-tickets assignment!
+My version of the cinema-tickets assignment! Quack!
 
 This project simulates cinema ticket booking via a CLI, applying the business rules (given later in this README) and constraints. It was built with TDD, and designed to have a clear, straightforward architecture.
 
@@ -45,8 +45,8 @@ npm run lint
 
 This project has been designed so that it is simple to navigate and iterate on in the future.
 
-- `src/` — CLI, business logic, services, and even the third-party integrations.
-- `test/` — Mirrors `src/` directory structure to ensure a clear and maintainable organisation for all tests.
+- `src/` — CLI, business logic, services, and the third-party integrations.
+- `test/` — Mirrors `src/` directory structure for clear and maintainable test organisation.
 - `manualCall.js` — Can be manually changed to interact with the TicketService directly.
 
 
@@ -63,7 +63,7 @@ Below is a diagram of how the main services in DuckFlix quack to each other:
 - **SeatReservationService**: Pretends to save your seat.
 
 **TLDR;**
-You (the user) interact with the CLI, which hands everything off to `TicketService`. That service then wrangles all the other helpers to make your booking happen (or not, if you try to book 1000 infant tickets).
+You (dear user) interact with the CLI, which hands everything off to `TicketService`. That service then wrangles all the other helpers to make your booking happen (or not, if you try to book 1000 infant tickets).
 
 ### TDD & CI Pipeline
 - **Test-Driven Development (TDD):** I used a TDD approach and have a lot of unit tests to help pinpoint any issues.
@@ -72,7 +72,7 @@ You (the user) interact with the CLI, which hands everything off to `TicketServi
 - **CI Pipeline:** Every push runs jobs that lint and test the code, and it generates a coverage report. See the latest at: https://duckduckboom.github.io/cinema-tickets/coverage/
 
 ---
-## 📦 Dependencies (aka, What Makes This Duck Quack)
+## 📦 Dependencies (aka, What Helps This Duck Quack)
 
 - **winston** — Logging, but not in production. Keeps everything clean but is there for when you inevitably need it.
 - **jest** — Testing, because TDD. But seriously, the tests ensure everything works, and let you refactor without breaking anything (or at least, they show what you have broken...).
@@ -111,7 +111,7 @@ You (the user) interact with the CLI, which hands everything off to `TicketServi
   ...your booking will be rejected, and you’ll get a friendly error message. Don't worry, you will be asked if you want to try again.
 - Payments and seat reservations are handled by external services (we trust them, but have tests just in case...).
 
-### Error Hierarchy 
+### 🚨 Error Hierarchy 
 
 Some rules take priority over others. Here are a few scenarios:  
   
