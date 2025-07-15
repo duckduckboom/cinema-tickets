@@ -50,4 +50,5 @@ jobs:
           destination_dir: coverage
       
       - name: Output coverage report URL
+        if: always()
         run: echo "Coverage report available at https://duckduckboom.github.io/cinema-tickets/coverage/"
