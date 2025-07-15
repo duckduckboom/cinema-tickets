@@ -126,6 +126,7 @@ describe('DuckFlix CLI simulation', () => {
 
 // Helper functions
 function cleanOutput(str) {
+  // eslint-disable-next-line no-control-regex
   let cleaned = str.replace(/\x1b|\u001b/g, '');
   cleaned = cleaned.replace(/\[[0-9;]*m/g, '');
   cleaned = cleaned.replace(/\r\n|\r/g, '\n');
