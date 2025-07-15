@@ -1,9 +1,9 @@
 import { describe, jest } from '@jest/globals';
 let TicketService;
 let TicketTypeRequest;
-import { INVALID_ACCOUNT_ID, EMPTY_TICKET_REQUEST, TOO_MANY_TICKETS, ADULT_REQUIRED, TOO_MANY_INFANTS_TO_ADULTS } from '../../src/pairtest/lib/Errors.js';
+import * as Errors from '../../src/pairtest/lib/Errors.js';
 let InvalidPurchaseException;
-let ADULT, CHILD, INFANT;
+let ADULT, CHILD, INFANT, TICKET_TYPES;
 let ADULT_PRICE, CHILD_PRICE, INFANT_PRICE;
 let mockPaymentService, mockSeatService;
 
@@ -25,6 +25,7 @@ describe('TicketService', () => {
     ADULT = constants.ADULT;
     CHILD = constants.CHILD;
     INFANT = constants.INFANT;
+    TICKET_TYPES = constants.TICKET_TYPES;
     ADULT_PRICE = constants.TICKET_PRICES.ADULT;
     CHILD_PRICE = constants.TICKET_PRICES.CHILD;
     INFANT_PRICE = constants.TICKET_PRICES.INFANT;
@@ -100,6 +101,48 @@ describe('TicketService', () => {
         success: true
       });
     });
+
+     test('should error if payment service fail due to accountID', () => {
+      const accountId = 1;
+      mockPaymentService.makePayment.mockImplementation(() => {
+        throw new TypeError('accountId must be an integer');
+      });
+      expect(() =>
+        ticketService.purchaseTickets(accountId, new TicketTypeRequest(ADULT, 1))
+      ).toThrow('Unexpected error during ticket purchase: Payment gateway error: accountId must be an integer');
+    });
+
+    test('should error if payment service fails due to payment total', () => {
+      const accountId = 1;
+      mockPaymentService.makePayment.mockImplementation(() => {
+        throw new TypeError('totalAmountToPay must be an integer');
+      });
+      expect(() =>
+        ticketService.purchaseTickets(accountId, new TicketTypeRequest(ADULT, 1))
+      ).toThrow('Unexpected error during ticket purchase: Payment gateway error: totalAmountToPay must be an integer');
+    });
+
+    test('should throw InvalidPurchaseException if seat reservation fails with accountId TypeError', () => {
+      const accountId = 1;
+      mockSeatService.reserveSeat.mockImplementation(() => {
+        throw new TypeError('accountId must be an integer');
+      });
+
+      expect(() =>
+        ticketService.purchaseTickets(accountId, new TicketTypeRequest(ADULT, 1))
+      ).toThrow('Unexpected error during ticket purchase: Seat reservation error: accountId must be an integer');
+    });
+
+    test('should throw InvalidPurchaseException if seat reservation fails', () => {
+      const accountId = 1;
+      mockSeatService.reserveSeat.mockImplementation(() => {
+        throw new TypeError('totalSeatsToAllocate must be an integer');
+      });
+
+      expect(() =>
+        ticketService.purchaseTickets(accountId, new TicketTypeRequest(ADULT, 1))
+      ).toThrow('Unexpected error during ticket purchase: Seat reservation error: totalSeatsToAllocate must be an integer');
+    });
   });
 
   describe('Input validation', () => {
@@ -111,7 +154,7 @@ describe('TicketService', () => {
       });
       test ('should present message about invalid account ID', () => {
         const accountID = 'DUCK';
-        expect(() => ticketService.purchaseTickets(accountID)).toThrow(INVALID_ACCOUNT_ID);
+        expect(() => ticketService.purchaseTickets(accountID)).toThrow(Errors.INVALID_ACCOUNT_ID);
       });
       test('should error if negative number', () => {
         const accountID = -5;
@@ -143,10 +186,25 @@ describe('TicketService', () => {
       });
     });
 
-    test('should throw if not given TicketTypeRequest instances', () => {
-      expect(() => ticketService.purchaseTickets(5, {})).toThrow();
-      expect(() => ticketService.purchaseTickets(5, "not a ticket")).toThrow();
-      expect(() => ticketService.purchaseTickets(5, 123)).toThrow();
+    describe('Ticket Types and Amounts must be valid', () => {
+      test('should error if invalid ticket type', () => {
+        const requests = [new TicketTypeRequest('DUCK', 5)];
+        expect(() => ticketService.purchaseTickets(1, ...requests)).toThrow(
+          Errors.INVALID_TICKET_TYPE(TICKET_TYPES)
+        );
+      });
+      test('should error if non-integer ticket units', () => {
+        const requests = [new TicketTypeRequest(ADULT, 'DUCK')];
+        expect(() => ticketService.purchaseTickets(1, ...requests)).toThrow(Errors.INVALID_TICKET_UNITS);
+      });
+      test('should error if decimal ticket units', () => {
+        const requests = [new TicketTypeRequest(ADULT, 2.5)];
+        expect(() => ticketService.purchaseTickets(1, ...requests)).toThrow(Errors.INVALID_TICKET_UNITS);
+      });
+      test('should error if negative ticket units', () => {
+        const requests = [new TicketTypeRequest(ADULT, -1)];
+        expect(() => ticketService.purchaseTickets(1, ...requests)).toThrow(Errors.INVALID_TICKET_UNITS);
+      });
     });
   });
 
@@ -229,36 +287,33 @@ describe('TicketService', () => {
        const accountId = 5;
       test('should not allow booking more than 25 tickets', () => {
         const requests = [new TicketTypeRequest(ADULT, 20), new TicketTypeRequest(CHILD, 6)];
-        expect(() => ticketService.purchaseTickets(accountId, ...requests)).toThrow(TOO_MANY_TICKETS);
+        expect(() => ticketService.purchaseTickets(accountId, ...requests)).toThrow(Errors.TOO_MANY_TICKETS);
       });
 
       test('should not allow booking with no adults', () => {
         const requests = [new TicketTypeRequest(CHILD, 5), new TicketTypeRequest(INFANT, 2)];
-        expect(() => ticketService.purchaseTickets(accountId, ...requests)).toThrow(ADULT_REQUIRED);
+        expect(() => ticketService.purchaseTickets(accountId, ...requests)).toThrow(Errors.ADULT_REQUIRED);
       });
 
       // should be 1:1 infant to adults, as an infant needs to sit on adult lap
       test('should not allow more infants than adults', () => {
         const requests = [new TicketTypeRequest(ADULT, 1), new TicketTypeRequest(INFANT, 2)];
-        expect(() => ticketService.purchaseTickets(accountId, ...requests)).toThrow(TOO_MANY_INFANTS_TO_ADULTS);
+        expect(() => ticketService.purchaseTickets(accountId, ...requests)).toThrow(Errors.TOO_MANY_INFANTS_TO_ADULTS);
       });
 
       test('should not allow booking with infants and no adults', () => {
         const requests = [new TicketTypeRequest(INFANT, 5)];
-        expect(() => ticketService.purchaseTickets(accountId, ...requests)).toThrow(ADULT_REQUIRED);
+        expect(() => ticketService.purchaseTickets(accountId, ...requests)).toThrow(Errors.ADULT_REQUIRED);
       });
 
       test('should not allow booking with children and no adults', () => {
         const requests = [new TicketTypeRequest(CHILD, 5)];
-        expect(() => ticketService.purchaseTickets(accountId, ...requests)).toThrow(ADULT_REQUIRED);
+        expect(() => ticketService.purchaseTickets(accountId, ...requests)).toThrow(Errors.ADULT_REQUIRED);
       });
       test('should not allow booking with zero tickets', () => {
         const requests = [];
-        expect(() => ticketService.purchaseTickets(accountId, ...requests)).toThrow(EMPTY_TICKET_REQUEST);
+        expect(() => ticketService.purchaseTickets(accountId, ...requests)).toThrow(Errors.EMPTY_TICKET_REQUEST);
       });
     });
-
-   
-
   });
 });
