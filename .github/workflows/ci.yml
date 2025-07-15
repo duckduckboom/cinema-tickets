@@ -48,3 +48,6 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./coverage/lcov-report
           destination_dir: coverage
+      
+      - name: Output coverage report URL
+        run: echo "Coverage report: https://duckduckboom.github.io/cinema-tickets/coverage/"
