@@ -25,16 +25,13 @@ export const cliMessages = {
     unexpected: '\n🚨 Unexpected error:'
   }, 
   logger: {
-    cliStarted: 'DuckFlix CLI started',
-    cliExited: 'DuckFlix CLI exited',
-    promptBookingDetails: 'Prompting user for booking details',
-    userInput: 'User entered',
-    startBookingProcess: 'Starting booking flow',
-    bookingSucceeded: 'Booking succeeded',
-    bookingFailed: 'Booking failed',
-    unexpectedError: 'Unexpected error',
-    userRetry: 'User chose to retry booking',
-    userNoRetry: 'User chose not to retry booking',
-    invalidInput: 'Invalid input received'
+    cliStarted: 'CLI: DuckFlix started',
+    cliExited: 'CLI: DuckFlix exited',
+    bookingSucceeded: 'CLI: Booking succeeded',
+    bookingFailed: 'CLI: Booking failed',
+    unexpectedError: 'CLI: Unexpected error',
+    userRetry: 'CLI: User chose to retry booking',
+    userNoRetry: 'CLI: User chose not to retry booking',
+    invalidInput: 'CLI: Invalid input received'
   }
 }; 

@@ -299,8 +299,8 @@ describe('TicketService', () => {
       });
 
       // should be 1:1 infant to adults, as an infant needs to sit on adult lap
-      test('should not allow more infants than adults', () => {
-        const requests = [new TicketTypeRequest(ADULT, 1), new TicketTypeRequest(INFANT, 2)];
+      test('should not allow more (24) infants than (1) adults', () => {
+        const requests = [new TicketTypeRequest(ADULT, 1), new TicketTypeRequest(INFANT, 24)];
         expect(() => ticketService.purchaseTickets(accountId, ...requests)).toThrow(Errors.TOO_MANY_INFANTS_TO_ADULTS);
       });
 

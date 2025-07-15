@@ -4,6 +4,8 @@ import TicketCalculationService from './TicketCalculationService.js';
 import TicketPaymentService from '../thirdparty/paymentgateway/TicketPaymentService.js';
 import SeatReservationService from '../thirdparty/seatbooking/SeatReservationService.js';
 import { ADULT, CHILD, INFANT, TICKET_TYPES } from '../pairtest/lib/Constants.js';
+import { logger } from '../pairtest/lib/Logger.js';
+import { serviceMessages } from '../pairtest/lib/Messages.js';
 
 
 export default class TicketService {
@@ -14,6 +16,7 @@ export default class TicketService {
     try {
     this.#validateAccountId(accountId);
     this.#validateTicketTypeRequests(ticketTypeRequests);
+    logger.info(serviceMessages.validatedInput(accountId, ticketTypeRequests.map(r => ({type: r.getTicketType(), amount: r.getNoOfTickets()}))));
   
     const ticketAmounts = this.#combineTicketRequests(ticketTypeRequests);
 
@@ -25,8 +28,10 @@ export default class TicketService {
     this.#handlePayment(accountId, totalCost);
     this.#handleSeatReservation(accountId, totalSeats);
 
+    logger.info(serviceMessages.purchaseSucceeded);
     return { accountId, ticketAmounts, totalCost, totalSeats, totalTickets, success: true };
     } catch (error) {
+      logger.error(serviceMessages.errorInPurchase(error));
       if (error instanceof InvalidPurchaseException) {
         throw error;
       } 
@@ -43,13 +48,16 @@ export default class TicketService {
 
   #validateTicketTypeRequests(ticketTypeRequests) {
     if (this.#isInvalidArray(ticketTypeRequests)) {
+      logger.warn(serviceMessages.noTicketRequests);
       throw new InvalidPurchaseException(Errors.EMPTY_TICKET_REQUEST);
     }
     ticketTypeRequests.forEach(req => {
       if (!this.#isValidTicketType(req.getTicketType())) {
+        logger.warn(serviceMessages.invalidTicketType(req.getTicketType()));
         throw new InvalidPurchaseException(Errors.INVALID_TICKET_TYPE(TICKET_TYPES));
       }
       if (!this.#isValidTicketAmount(req.getNoOfTickets())) {
+        logger.warn(serviceMessages.invalidTicketAmount(req.getNoOfTickets()));
         throw new InvalidPurchaseException(Errors.INVALID_TICKET_UNITS);
       }
     });
@@ -72,9 +80,11 @@ export default class TicketService {
   #validateWithinTicketLimits(ticketAmounts) {
     const totalTickets = TicketCalculationService.calculateTotalTickets(ticketAmounts);
     if (totalTickets === 0) {
+      logger.warn(serviceMessages.zeroTickets);
       throw new InvalidPurchaseException(Errors.EMPTY_TICKET_REQUEST);
     } 
     if (totalTickets > 25) {
+      logger.warn(serviceMessages.tooManyTickets(totalTickets));
       throw new InvalidPurchaseException(Errors.TOO_MANY_TICKETS);
     }
   }
@@ -85,6 +95,7 @@ export default class TicketService {
     const hasInfants = ticketAmounts[INFANT] > 0;
 
     if (hasNoAdults && (hasChildren || hasInfants)) {
+      logger.warn(serviceMessages.noAdults);
       throw new InvalidPurchaseException(Errors.ADULT_REQUIRED);
     }
   }
@@ -99,6 +110,7 @@ export default class TicketService {
     try {
       this.#callPaymentService(accountId, totalCost);
     } catch (error) {
+      logger.error(serviceMessages.paymentServiceError(error));
       throw new InvalidPurchaseException(
         `Unexpected error during ticket purchase: Payment gateway error: ${error.message}`
       );
@@ -109,6 +121,7 @@ export default class TicketService {
     try {
       this.#callSeatReservationService(accountId, totalSeats);
     } catch (error) {
+      logger.error(serviceMessages.seatReservationServiceError(error));
       throw new InvalidPurchaseException(
         `Unexpected error during ticket purchase: Seat reservation error: ${error.message}`
       );
