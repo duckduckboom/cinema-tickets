@@ -74,6 +74,7 @@ describe('TicketService', () => {
         ticketAmounts: { [ADULT]: adultAmount, [CHILD]: childAmount, [INFANT]: infantAmount },
         totalCost: totalCost,
         totalSeats: seatsNeeded,
+        totalTickets: 15,
         success: true
       });
     });
@@ -98,6 +99,7 @@ describe('TicketService', () => {
         ticketAmounts: { [ADULT]: adultAmount, [CHILD]: childAmount, [INFANT]: infantAmount },
         totalCost: totalCost,
         totalSeats: seatsNeeded,
+        totalTickets: 5,
         success: true
       });
     });
@@ -105,32 +107,32 @@ describe('TicketService', () => {
      test('should error if payment service fail due to accountID', () => {
       const accountId = 1;
       mockPaymentService.makePayment.mockImplementation(() => {
-        throw new TypeError('accountId must be an integer');
+        throw new TypeError('Fake paymentService error');
       });
       expect(() =>
         ticketService.purchaseTickets(accountId, new TicketTypeRequest(ADULT, 1))
-      ).toThrow('Unexpected error during ticket purchase: Payment gateway error: accountId must be an integer');
+      ).toThrow('Unexpected error during ticket purchase: Payment gateway error: Fake paymentService error');
     });
 
     test('should error if payment service fails due to payment total', () => {
       const accountId = 1;
       mockPaymentService.makePayment.mockImplementation(() => {
-        throw new TypeError('totalAmountToPay must be an integer');
+        throw new TypeError('Fake paymentService error');
       });
       expect(() =>
         ticketService.purchaseTickets(accountId, new TicketTypeRequest(ADULT, 1))
-      ).toThrow('Unexpected error during ticket purchase: Payment gateway error: totalAmountToPay must be an integer');
+      ).toThrow('Unexpected error during ticket purchase: Payment gateway error: Fake paymentService error');
     });
 
     test('should throw InvalidPurchaseException if seat reservation fails with accountId TypeError', () => {
       const accountId = 1;
       mockSeatService.reserveSeat.mockImplementation(() => {
-        throw new TypeError('accountId must be an integer');
+        throw new TypeError('Fake reservationService error');
       });
 
       expect(() =>
         ticketService.purchaseTickets(accountId, new TicketTypeRequest(ADULT, 1))
-      ).toThrow('Unexpected error during ticket purchase: Seat reservation error: accountId must be an integer');
+      ).toThrow('Unexpected error during ticket purchase: Seat reservation error: Fake reservationService error');
     });
 
     test('should throw InvalidPurchaseException if seat reservation fails', () => {
@@ -230,6 +232,7 @@ describe('TicketService', () => {
           ticketAmounts: { [ADULT]: adultAmount, [CHILD]: childAmount, [INFANT]: infantAmount },
           totalCost,
           totalSeats: seatsNeeded,
+          totalTickets: 25,
           success: true
         });
       });
@@ -254,6 +257,7 @@ describe('TicketService', () => {
           ticketAmounts: { [ADULT]: adultAmount, [CHILD]: childAmount, [INFANT]: infantAmount },
           totalCost,
           totalSeats: seatsNeeded,
+          totalTickets: 10,
           success: true
         });
       });
@@ -278,6 +282,7 @@ describe('TicketService', () => {
           ticketAmounts: { [ADULT]: adultAmount, [CHILD]: childAmount, [INFANT]: infantAmount },
           totalCost,
           totalSeats: seatsNeeded,
+          totalTickets: 5,
           success: true
         });
       });

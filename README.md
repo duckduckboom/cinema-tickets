@@ -2,14 +2,21 @@
 
 My version of the cinema-tickets assignment!
 
-This currently contains the MVP.
+Before doing anything, be sure to do the following commands:
+```sh
+nvm use
+npm i
+```
+
+There is a CLI-based user-interface. This can be accessed using:
+```sh
+npm start
+```
 
 There is a file which directly plugs in to the TicketService, for current testing purposes.
 You can access it with the following commands:
 ```sh
-nvm use
-npm i
-node index.js
+npm start:manual
 ```
 
 Tests can be run with:

@@ -20,11 +20,12 @@ export default class TicketService {
     this.#validateTicketRules(ticketAmounts);
 
     const { totalCost, totalSeats } = TicketCalculationService.calculateTotals(ticketAmounts);
+    const totalTickets = TicketCalculationService.calculateTotalTickets(ticketAmounts);
 
     this.#handlePayment(accountId, totalCost);
     this.#handleSeatReservation(accountId, totalSeats);
 
-    return { accountId, ticketAmounts, totalCost, totalSeats, success: true };
+    return { accountId, ticketAmounts, totalCost, totalSeats, totalTickets, success: true };
     } catch (error) {
       if (error instanceof InvalidPurchaseException) {
         throw error;
