@@ -1,8 +1,10 @@
 import TicketTypeRequest from '../../../src/pairtest/lib/TicketTypeRequest.js';
-import { ADULT, CHILD, INFANT } from '../../../src/pairtest/lib/Constants.js';
+import { ADULT, CHILD, INFANT, TICKET_TYPES } from '../../../src/pairtest/lib/Constants.js';
+import { INVALID_TICKET_TYPE, INVALID_TICKET_UNITS } from '../../../src/pairtest/lib/Errors.js';
+
 describe('TicketTypeRequest', () => {
-   describe('creates ticket requests with any type and count', () => {
-      test('creates valid adult ticket request', () => {
+   describe('creates ticket requests with valid type and count', () => {
+    test('creates valid adult ticket request', () => {
       const request = new TicketTypeRequest(ADULT, 5);
       expect(request.getTicketType()).toBe(ADULT);
       expect(request.getNoOfTickets()).toBe(5);
@@ -31,11 +33,36 @@ describe('TicketTypeRequest', () => {
       expect(request.getTicketType()).toBe(ADULT);
       expect(request.getNoOfTickets()).toBe(-2);
     });
+  });
 
-    test('allows ticket type not ADULT, CHILD, or INFANT', () => {
-      const request = new TicketTypeRequest('Duck', -2);
-      expect(request.getTicketType()).toBe('Duck');
-      expect(request.getNoOfTickets()).toBe(-2);
+  describe('rejects ticket requests with invalid type', () => {
+    test('error if ticket type is not ADULT, CHILD, or INFANT', () => {
+      expect(() => new TicketTypeRequest('DUCK', 1)).toThrow(new TypeError(INVALID_TICKET_TYPE(TICKET_TYPES)));
     });
-   });  
+
+    test('error if ticket type is empty string', () => {
+      expect(() => new TicketTypeRequest('', 1)).toThrow(new TypeError(INVALID_TICKET_TYPE(TICKET_TYPES)));
+    });
+
+    test('error if ticket type is null', () => {
+      expect(() => new TicketTypeRequest(null, 1)).toThrow(new TypeError(INVALID_TICKET_TYPE(TICKET_TYPES)));
+    });
+
+    test('error if ticket type is undefined', () => {
+      expect(() => new TicketTypeRequest(undefined, 1)).toThrow(new TypeError(INVALID_TICKET_TYPE(TICKET_TYPES)));
+    });
+
+    test('error if ticket type is incorrect case', () => {
+      expect(() => new TicketTypeRequest('adult', 1)).toThrow(new TypeError(INVALID_TICKET_TYPE(TICKET_TYPES)));
+    });  
+  }); 
+      describe('rejects ticket requests with invalid count', () => { 
+      expect(() => new TicketTypeRequest('ADULT', 5.5)).toThrow(new TypeError(INVALID_TICKET_UNITS));
+      expect(() => new TicketTypeRequest('ADULT', true)).toThrow(new TypeError(INVALID_TICKET_UNITS));
+      expect(() => new TicketTypeRequest('ADULT', false)).toThrow(new TypeError(INVALID_TICKET_UNITS));
+      expect(() => new TicketTypeRequest('ADULT', null)).toThrow(new TypeError(INVALID_TICKET_UNITS));
+      expect(() => new TicketTypeRequest('ADULT', undefined)).toThrow(new TypeError(INVALID_TICKET_UNITS));
+      expect(() => new TicketTypeRequest('ADULT', "5")).toThrow(new TypeError(INVALID_TICKET_UNITS));
+      expect(() => new TicketTypeRequest('ADULT', NaN)).toThrow(new TypeError(INVALID_TICKET_UNITS));
+   }); 
 });
