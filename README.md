@@ -42,7 +42,7 @@ npm test
 ```sh
 npm run lint
 ```
-
+---
 ## 📝 Architecture & Design
 
 This project has been designed so that it is simple to navigate and iterate on in the future.
@@ -68,6 +68,7 @@ Below is a diagram of how the main services in DuckFlix quack to each other:
 **TLDR;**
 You (dear user) interact with the CLI, which hands everything off to `TicketService`. That service then wrangles all the other helpers to make your booking happen (or not, if you try to book 1000 infant tickets).
 
+---
 ### TDD & CI Pipeline
 - **Test-Driven Development (TDD):** I used a TDD approach and have a lot of unit tests to help pinpoint any issues.
 - **Third-party integrations** are mocked/stubbed in most tests.
