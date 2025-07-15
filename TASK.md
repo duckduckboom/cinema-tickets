@@ -36,6 +36,8 @@ Provide a working implementation of a `TicketService` that:
 - Rejects any invalid ticket purchase requests. It is up to you to identify what should be deemed as an invalid purchase request.
 
 
+--------------
+# My notes
 
 ## PROBLEM:
 INPUT:
@@ -116,56 +118,3 @@ Shows: ERROR (infants need adults)
 
 Scenario 3: 20 adults, 10 children, 0 infants
 Shows:  ERROR (too many tickets)
-
-
-D
-INPUT:
-Number: AccountID
-
-Object ticketCounts = {
-  ADULT: 0,
-  CHILD: 0,
-  INFANT: 0
-}
-
-OUTPUT:
-Number: Total amount paid
-Number: Total seats booked
-Boolean: if booking was successful
-Sring: showing if booking was successful or not
-
-INTERMEDIARY:
-Object TICKET_PRICES = {
-  ADULT: 25,
-  CHILD: 15,
-  INFANT: 0
-} 
-
-
-## ALGO
-Get a valid accountID
-
-a)
-Get a valid number of adult tickets wanted
-- Has to be >= 1 and <= 25, or fail validation and don't continue
-- Need to give specific reasons for why it fails validation
-Get a valid number of child tickets wanted
-Get a valid number of infant tickets wanted
-
-Validate total ticket count ≤ 25
-
-Calculate total seats
-Send booking request to SeatReservationService.js
-
-Calculate total price of tickets
-Send payment request to TicketPaymentService.js
-
-Was everything successful?
-- yes = print success message
-- no = print failure message
-
-
-Ask if they would like to book more tickets
-- yes = restart from a)
-- no = end program
-
