@@ -9,7 +9,7 @@
   "scripts": {
     "test": "node --experimental-vm-modules ./node_modules/.bin/jest",
     "test:verbose": "node --experimental-vm-modules ./node_modules/.bin/jest --verbose",
-    "test:coverage": "node --experimental-vm-modules ./node_modules/.bin/jest --coverage",
+    "test:coverage": "node --experimental-vm-modules ./node_modules/.bin/jest --coverage --testPathIgnorePatterns='test/cli/cli.test.js",
     "start": "node index.js",
     "start:manual": "node manualCall.js",
     "lint": "eslint src/ test/",

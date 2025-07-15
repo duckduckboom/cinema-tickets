@@ -3,6 +3,7 @@ import TicketService from '../services/TicketService.js';
 import TicketTypeRequest from '../pairtest/lib/TicketTypeRequest.js';
 import InvalidPurchaseException from '../pairtest/lib/InvalidPurchaseException.js';
 import { ADULT, CHILD, INFANT } from '../pairtest/lib/Constants.js';
+import { cliMessages } from './cliMessages.js';
 
 
 const rl = readline.createInterface({
@@ -15,11 +16,11 @@ function promptUser(question) {
 }
 
 async function promptForBookingDetails() {
-  console.log('\nLet\'s book your tickets!\n');
-  const accountId = await getValidUserInput('👤 Please enter your account ID: ');
-  const adultAmount = await getValidUserInput('How many ADULT tickets would you like? ');
-  const childAmount = await getValidUserInput('How many CHILD tickets would you like? ');
-  const infantAmount = await getValidUserInput('How many INFANT tickets would you like? ');
+  console.log(cliMessages.bookTicketsHeading);
+  const accountId = await getValidUserInput(cliMessages.prompts.accountId);
+  const adultAmount = await getValidUserInput(cliMessages.prompts.adultAmount);
+  const childAmount = await getValidUserInput(cliMessages.prompts.childAmount);
+  const infantAmount = await getValidUserInput(cliMessages.prompts.infantAmount);
   return { accountId, adultAmount, childAmount, infantAmount };
 }
 
@@ -30,7 +31,7 @@ async function getValidUserInput(question) {
     if (Number.isInteger(num) && num >= 0) {
       return num;
     }
-    console.log("Please enter a valid whole number that's greater than 0.");
+    console.log(cliMessages.prompts.invalidNumber);
   }
 }
 
@@ -45,27 +46,27 @@ function combineTicketRequests({ adultAmount, childAmount, infantAmount }) {
 function displayResult(result) {
   const { ticketAmounts, totalCost, totalSeats, totalTickets } = result;
   const formatCurrency = (amount) => `£${amount.toFixed(2)}`;
-  console.log('\n🥳🎬 Booking succeeded! 🎬🥳');
-  console.log('------------------');
-  console.log(`Adult tickets: ${ticketAmounts.ADULT}`);
-  console.log(`Child tickets: ${ticketAmounts.CHILD}`);
-  console.log(`Infant tickets: ${ticketAmounts.INFANT}`);
-  console.log('\n🎟️  Total tickets:', totalTickets);
-  console.log('💺 Total seats:', totalSeats);
-    console.log('💰 Total cost:', formatCurrency(totalCost));
-  console.log('----------------------');
+  console.log(cliMessages.summary.successHeading);
+  console.log(cliMessages.summary.divider);
+  console.log(`${cliMessages.summary.adult}${ticketAmounts.ADULT}`);
+  console.log(`${cliMessages.summary.child}${ticketAmounts.CHILD}`);
+  console.log(`${cliMessages.summary.infant}${ticketAmounts.INFANT}`);
+  console.log(`${cliMessages.summary.totalTickets} ${totalTickets}`);
+  console.log(`${cliMessages.summary.totalSeats} ${totalSeats}`);
+  console.log(`${cliMessages.summary.totalCost} ${formatCurrency(totalCost)}`);
+  console.log(cliMessages.summary.divider);
 }
 
 function displayError(error) {
   if (error instanceof InvalidPurchaseException) {
-    console.error('\n🚨 Booking failed:', error.message, '🚨');
+    console.error(`${cliMessages.errors.bookingFailed} ${error.message}`);
   } else {
-    console.error('\n🚨 Unexpected error:', error, '🚨');
+    console.error(`${cliMessages.errors.unexpected} ${error}`);
   }
 }
 
 async function askToRetry() {
-  const answer = await promptUser('Would you like to try again? (y/n): ');
+  const answer = await promptUser(cliMessages.prompts.retry);
   return answer.trim().toLowerCase().startsWith('y');
 }
 
@@ -85,7 +86,7 @@ async function makeBooking() {
 
 async function main() {
   console.clear();
-  console.log('🦆  Welcome to DuckFlix! 🦆');
+  console.log(cliMessages.welcome);
   let bookingComplete = false;
   let wantsToRetry = true;
 
@@ -95,7 +96,7 @@ async function main() {
       wantsToRetry = await askToRetry();
     }
   } 
-  console.log('\nThank you for using DuckFlix! 🍿');
+  console.log(cliMessages.goodbye);
   rl.close();
 }
 
