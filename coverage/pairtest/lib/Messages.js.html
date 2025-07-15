@@ -23,9 +23,9 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">63.63% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>7/11</span>
+                <span class='fraction'>11/11</span>
             </div>
         
             
@@ -37,16 +37,16 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">60% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>6/10</span>
+                <span class='fraction'>10/10</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">63.63% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>7/11</span>
+                <span class='fraction'>11/11</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line medium'></div>
+    <div class='status-line high'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -79,29 +79,29 @@
 <a name='L14'></a><a href='#L14'>14</a>
 <a name='L15'></a><a href='#L15'>15</a>
 <a name='L16'></a><a href='#L16'>16</a>
-<a name='L17'></a><a href='#L17'>17</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">18x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L17'></a><a href='#L17'>17</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">19x</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">20x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">export const serviceMessages = {
   validatedInput: (accountId, requests) =&gt; `TicketService: Validated accountId and ticketTypeRequests: accountId=${accountId}, requests=${JSON.stringify(requests)}`,
   purchaseSucceeded: 'TicketService: Ticket purchase succeeded' ,
   errorInPurchase: (error) =&gt; `TicketService: Error in purchaseTickets: ${error}`,
-  invalidAccountId: <span class="fstat-no" title="function not covered" >(a</span>ccountId) =&gt; <span class="cstat-no" title="statement not covered" >`TicketService: Invalid accountId: ${accountId}`,</span>
+  invalidAccountId: (accountId) =&gt; `TicketService: Invalid accountId: ${accountId}`,
   noTicketRequests: 'TicketService: No ticket type requests provided',
-  invalidTicketType: <span class="fstat-no" title="function not covered" >(t</span>ype) =&gt; <span class="cstat-no" title="statement not covered" >`TicketService: Invalid ticket type: ${type}`,</span>
+  invalidTicketType: (type) =&gt; `TicketService: Invalid ticket type: ${type}`,
   invalidTicketAmount: (amount) =&gt; `TicketService: Invalid ticket amount: ${amount}`,
   zeroTickets: 'TicketService: Attempted to book zero tickets',
   tooManyTickets: (totalTickets) =&gt; `TicketService: Attempted to book too many tickets: ${totalTickets}`,
@@ -109,8 +109,8 @@
   tooManyInfants: 'TicketService: Attempted to book more infants than adults',
   paymentServiceError: (error) =&gt; `TicketService: Payment service error: ${error}`,
   seatReservationServiceError: (error) =&gt; `TicketService: Seat reservation service error: ${error}`,
-  globalUnhandledRejection: <span class="fstat-no" title="function not covered" >(r</span>eason) =&gt; <span class="cstat-no" title="statement not covered" >`Global: Unhandled Rejection: ${reason}`,</span>
-  globalUncaughtException: <span class="fstat-no" title="function not covered" >(e</span>rr) =&gt; <span class="cstat-no" title="statement not covered" >`Global: Uncaught Exception: ${err}`,</span>
+  globalUnhandledRejection: (reason) =&gt; `Global: Unhandled Rejection: ${reason}`,
+  globalUncaughtException: (err) =&gt; `Global: Uncaught Exception: ${err}`,
 }; </pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
@@ -118,7 +118,7 @@
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-07-15T20:54:08.742Z
+                at 2025-07-15T21:09:13.007Z
             </div>
         <script src="../../prettify.js"></script>
         <script>
