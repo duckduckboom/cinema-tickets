@@ -2,11 +2,11 @@
 
 My version of the cinema-tickets assignment! Quack!
 
-
 This project simulates cinema ticket booking via a Command-line interface (CLI), applying the business rules (given later in this README) and constraints. It was built using Test-Driven Development (TDD), features a clear and straightforward architecture, and is continuously validated by a Continuous Integration (CI) pipeline.
 
 
 ![DuckFlix CLI in action](/DuckFlix-Demo.png)
+
 
 
 
@@ -18,7 +18,7 @@ nvm use
 npm install
 ```
 
-### Run the CLI (no logging – like a customer):
+### Run the CLI (no logging, customer experience):
 ```sh
 npm start
 ```
@@ -44,7 +44,6 @@ npm run lint
 ```
 ---
 ## 📝 System Design
-
 
 This project has been designed so that it is simple to navigate and iterate on in the future.
 
@@ -87,6 +86,7 @@ You (dear user) interact with the CLI, which hands everything off to `TicketServ
 ---
 
 ## 🪺 Future Work Ideas
+
 - Dockerise the app for simple deployments
 - CLI tests to be added to the GitHub pipeline
 - Allow multiple bookings and an order system
