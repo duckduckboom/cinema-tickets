@@ -8,7 +8,12 @@ This project simulates cinema ticket booking via a Command-line interface (CLI),
 ![DuckFlix CLI in action](/DuckFlix-Demo.png)
 
 
-
+## 📖 Contents
+- [:duck: Setup & Usage](#duck-setup--usage)
+- [:memo: System Design](#memo-system-design)
+- [:brain: Business Logic](#brain-business-logic)
+- [:package: Dependencies](#package-dependencies-aka-what-helps-duckflix-quack)
+- [:nest_with_eggs: Future Work Ideas](#nest_with_eggs-future-work-ideas)
 
 ## 🦆 Setup & Usage
 
@@ -42,6 +47,52 @@ npm test
 ```sh
 npm run lint
 ```
+---
+  ## 🧠 Business Logic
+
+Ticket Type Comparison Table
+| Type   | Price | Seats | Extra Notes                                                   |
+| :----- | :---: | :---: | :------------------------------------------------------------ |
+| Adult  |  £25  |   1   | At least 1 required for every booking.                        |
+| Child  |  £15  |   1   |                                                               |
+| Infant |   £0  |   0   | Sits on an adult's lap. Requires a 1:1 Adult-to-Infant ratio. |
+
+- There are three ticket types: **Adult (£25)**, **Child (£15)**, and **Infant (£0)**.
+- You can buy up to 25 tickets at a time.
+- Infants don’t pay and don’t get a seat - they sit on an adult’s lap. **Meaning that there must be a 1:1 Infant:Adult ratio.**
+- You can’t buy Child or Infant tickets without at least one Adult ticket (no unsupervised kids or infants allowed).
+- The total cost is: `(Adults × £25) + (Children × £15)` (because infants are free!).
+- The number of seats reserved is: `Adults + Children` (because infants don’t get seats).
+- You need a valid account ID, a number greater than 0, to book.
+- Your booking will be rejected, and you'll get a friendly error message, for the following reasons:
+  - Book more than 25 tickets
+  - Book with no adults (but with kids/infants)
+  - Book with more infants than adults
+  - Book with an invalid ticket type or quantity
+  - Book with account ID ≤ 0
+  - Book zero tickets
+- Don't worry, if your booking fails, you will be asked if you'd like to try again.
+- Payments and seat reservations are handled by external services (we trust them, but have tests just in case...).
+
+### 🚨 Error Hierarchy 
+
+Some rules take priority over others. Here are a few scenarios:  
+  
+-   **Scenario 1: No Adults with Children/Infants**  
+    -   **Input:** 0 adults, 2 children, 3 infants  
+    -   **Result:** `ERROR (must have adults)`  
+  
+-   **Scenario 2: More Infants than Adults**  
+    -   **Input:** 2 adults, 1 child, 3 infants  
+    -   **Result:** `ERROR (infants need adults)`  
+  
+-   **Scenario 3: Exceeding Ticket Limit**  
+    -   **Input:** 20 adults, 10 children, 0 infants  
+    -   **Result:** `ERROR (too many tickets)`  
+  
+-   **Scenario 4: Empty Order**  
+    -   **Input:** 0 adults, 0 children, 0 infants  
+    -   **Result:** `ERROR (empty order)`
 ---
 ## 📝 System Design
 
@@ -96,45 +147,6 @@ You (dear user) interact with the CLI, which hands everything off to `TicketServ
 - Add a web UI (because not everyone loves the terminal 😭)
 
 ---
-
-  ## 🧠 Business Logic
-  
-- There are three ticket types: **Adult (£25)**, **Child (£15)**, and **Infant (£0)**.
-- You can buy up to 25 tickets at a time.
-- Infants don’t pay and don’t get a seat - they sit on an adult’s lap. **Meaning that there must be a 1:1 Infant:Adult ratio.**
-- You can’t buy Child or Infant tickets without at least one Adult ticket (no unsupervised kids or infants allowed).
-- The total cost is: `(Adults × £25) + (Children × £15)` (because infants are free!).
-- The number of seats reserved is: `Adults + Children` (because infants don’t get seats).
-- You need a valid account ID, a number greater than 0, to book.
-- Your booking will be rejected, and you'll get a friendly error message, for the following reasons:
-  - Book more than 25 tickets
-  - Book with no adults (but with kids/infants)
-  - Book with more infants than adults
-  - Book with an invalid ticket type or quantity
-  - Book with account ID ≤ 0
-  - Book zero tickets
-- Don't worry, if your booking fails, you will be asked if you'd like to try again.
-- Payments and seat reservations are handled by external services (we trust them, but have tests just in case...).
-
-### 🚨 Error Hierarchy 
-
-Some rules take priority over others. Here are a few scenarios:  
-  
--   **Scenario 1: No Adults with Children/Infants**  
-    -   **Input:** 0 adults, 2 children, 3 infants  
-    -   **Result:** `ERROR (must have adults)`  
-  
--   **Scenario 2: More Infants than Adults**  
-    -   **Input:** 2 adults, 1 child, 3 infants  
-    -   **Result:** `ERROR (infants need adults)`  
-  
--   **Scenario 3: Exceeding Ticket Limit**  
-    -   **Input:** 20 adults, 10 children, 0 infants  
-    -   **Result:** `ERROR (too many tickets)`  
-  
--   **Scenario 4: Empty Order**  
-    -   **Input:** 0 adults, 0 children, 0 infants  
-    -   **Result:** `ERROR (empty order)`
   
 
 ## Thanks for reading 👏
