@@ -63,13 +63,13 @@ Ticket Type Comparison Table
 - There are three ticket types: **Adult (£25)**, **Child (£15)**, and **Infant (£0)**.
 - You can buy up to 25 tickets at a time.
 - Infants don’t pay and don’t get a seat - they sit on an adult’s lap. **Meaning that there must be a 1:1 Infant:Adult ratio.**
-- You can’t buy Child or Infant tickets without at least one Adult ticket (no unsupervised kids or infants allowed).
-- The total cost is: `(Adults × £25) + (Children × £15)` (because infants are free!).
+- You can’t buy Child or Infant tickets without at least one Adult ticket (no unsupervised children or infants allowed).
+- The total cost is: `(Adults × £25) + (Children × £15)` (because infants are free).
 - The number of seats reserved is: `Adults + Children` (because infants don’t get seats).
 - You need a valid account ID, a number greater than 0, to book.
 - Your booking will be rejected, and you'll get a friendly error message, for the following reasons:
   - Book more than 25 tickets
-  - Book with no adults (but with kids/infants)
+  - Book with no adults (but with children/infants)
   - Book with more infants than adults
   - Book with an invalid ticket type or quantity
   - Book with account ID ≤ 0
