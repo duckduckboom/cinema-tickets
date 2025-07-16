@@ -14,12 +14,12 @@ This project simulates cinema ticket booking via a Command-line interface (CLI),
 - [:brain: Business Logic](#-business-logic)
 - [:package: Dependencies](#p-dependencies-aka-what-helps-duckflix-quack)
 - [:nest_with_eggs: Future Work Ideas](#-future-work-ideas)
-- [Thanks for reading 👏](#thanks-for-reading-)
+- [👏 Thanks for reading](#thanks-for-reading-)
 
 ## 🦆 Setup & Usage
 
 Before you do anything else:
-```sh
+```shg
 nvm use
 npm install
 ```
