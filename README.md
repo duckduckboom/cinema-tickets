@@ -9,11 +9,12 @@ This project simulates cinema ticket booking via a Command-line interface (CLI),
 
 
 ## 📖 Contents
-- [:duck: Setup & Usage](#duck-setup--usage)
-- [:memo: System Design](#memo-system-design)
-- [:brain: Business Logic](#brain-business-logic)
-- [:package: Dependencies](#package-dependencies-aka-what-helps-duckflix-quack)
-- [:nest_with_eggs: Future Work Ideas](#nest_with_eggs-future-work-ideas)
+- [:duck: Setup & Usage](#-setup--usage)
+- [:memo: System Design](#-system-design)
+- [:brain: Business Logic](#-business-logic)
+- [:package: Dependencies](#p-dependencies-aka-what-helps-duckflix-quack)
+- [:nest_with_eggs: Future Work Ideas](#-future-work-ideas)
+- [Thanks for reading 👏](#thanks-for-reading-)
 
 ## 🦆 Setup & Usage
 
