@@ -35,7 +35,7 @@ npm start
 npm run start:dev
 ```
 
-  ### Run the manual test script (to poke the TicketService directly via `manualCall.js`):
+### Run the manual test script (to poke the TicketService directly via `manualCall.js`):
 ```sh
 npm run start:manual
 ```
@@ -122,7 +122,7 @@ Below is a diagram of how the main services in DuckFlix quack to each other:
 You (dear user) interact with the CLI, which hands everything off to `TicketService`. That service then wrangles all the other helpers to make your booking happen (or not, if you try to book 1000 infant tickets).
 
 ---
-### TDD & CI Pipeline
+### ⚙️ TDD & CI Pipeline
 - **TDD:** I used a TDD approach and have a lot of unit tests to help pinpoint any issues.
 - **Third-party integrations** TicketPaymentService and SeatReservationService are mocked/stubbed in the relevant tests.
 - **Logging** is only shown when in developer mode, to keep the user experience nice and clean.
