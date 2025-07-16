@@ -16,6 +16,7 @@ This project simulates cinema ticket booking via a Command-line interface (CLI),
 - [:nest_with_eggs: Future Work Ideas](#-future-work-ideas)
 - [👏 Thanks for reading](#thanks-for-reading-)
 
+
 ## 🦆 Setup & Usage
 
 Before you do anything else:
