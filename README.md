@@ -2,11 +2,11 @@
 
 My version of the cinema-tickets assignment! Quack!
 
-This project simulates cinema ticket booking via a Command-line interface (CLI), applying the business rules (given later in this README) and constraints. It was built with test-driven development (TDD), and designed to have a clear, straightforward architecture.
+
+This project simulates cinema ticket booking via a Command-line interface (CLI), applying the business rules (given later in this README) and constraints. It was built using Test-Driven Development (TDD), features a clear and straightforward architecture, and is continuously validated by a Continuous Integration (CI) pipeline.
 
 
 ![DuckFlix CLI in action](/DuckFlix-Demo.png)
-
 
 
 
@@ -43,7 +43,8 @@ npm test
 npm run lint
 ```
 ---
-## 📝 Architecture & Design
+## 📝 System Design
+
 
 This project has been designed so that it is simple to navigate and iterate on in the future.
 
@@ -70,13 +71,13 @@ You (dear user) interact with the CLI, which hands everything off to `TicketServ
 
 ---
 ### TDD & CI Pipeline
-- **Test-Driven Development (TDD):** I used a TDD approach and have a lot of unit tests to help pinpoint any issues.
+- **TDD:** I used a TDD approach and have a lot of unit tests to help pinpoint any issues.
 - **Third-party integrations** TicketPaymentService and SeatReservationService are mocked/stubbed in the relevant tests.
 - **Logging** is only shown when in developer mode, to keep the user experience nice and clean.
 - **CI Pipeline:** Every push runs jobs that lint and test the code, and it generates a coverage report. See the latest at: https://duckduckboom.github.io/cinema-tickets/coverage/
 
 ---
-## 📦 Dependencies (aka, What Helps This Duck Quack)
+## 📦 Dependencies (aka, What Helps DuckFlix Quack)
 
 - **winston** — Logging, but not in production. Keeps things clean but everything is there for when you inevitably need it.
 - **jest** — Testing, because TDD. But seriously, the tests ensure everything works, and let you refactor without breaking anything (or at least, they show what you have broken...).
@@ -86,13 +87,13 @@ You (dear user) interact with the CLI, which hands everything off to `TicketServ
 ---
 
 ## 🪺 Future Work Ideas
-
-- Dockerise the app for easy deployment
+- Dockerise the app for simple deployments
+- CLI tests to be added to the GitHub pipeline
 - Allow multiple bookings and an order system
 - Allow amended bookings (because typos...)
 - Cryptography to protect personally identifiable information (PII) 
+- Expose TicketService as an API using Express, opening it up to other apps and frontends
 - Add a web UI (because not everyone loves the terminal 😭)
-- CLI tests to be added to the GitHub pipeline
 
 ---
 
@@ -105,14 +106,14 @@ You (dear user) interact with the CLI, which hands everything off to `TicketServ
 - The total cost is: `(Adults × £25) + (Children × £15)` (because infants are free!).
 - The number of seats reserved is: `Adults + Children` (because infants don’t get seats).
 - You need a valid account ID, a number greater than 0, to book.
-- If you try to:
+- Your booking will be rejected, and you'll get a friendly error message, for the following reasons:
   - Book more than 25 tickets
   - Book with no adults (but with kids/infants)
   - Book with more infants than adults
   - Book with an invalid ticket type or quantity
   - Book with account ID ≤ 0
   - Book zero tickets
-  ...your booking will be rejected, and you’ll get a friendly error message. Don't worry, you will be asked if you want to try again.
+- Don't worry, if your booking fails, you will be asked if you'd like to try again.
 - Payments and seat reservations are handled by external services (we trust them, but have tests just in case...).
 
 ### 🚨 Error Hierarchy 
